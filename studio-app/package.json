@@ -1,0 +1,11 @@
+{
+  "name": "studio-management-app",
+  "version": "1.0.0",
+  "description": "Studio Management & Booking Web Application",
+  "scripts": {
+    "dev": "vite"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0"
+  }
+}

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - Aura Studio</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/user.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background-color: var(--background); padding: 24px;">
+
+  <div class="card" style="width: 100%; max-width: 460px; box-shadow: var(--shadow-xl); padding: 40px;">
+    <!-- Logo -->
+    <div style="text-align: center; margin-bottom: 24px;">
+      <a href="index.html" style="font-size: 24px; font-weight: 800; color: var(--text-primary); text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+        <i data-lucide="camera" style="color: var(--primary-green); width: 32px; height: 32px;"></i>
+        <span>Aura<span style="color: var(--primary-green);">Studio</span></span>
+      </a>
+      <p style="color: var(--text-secondary); margin-top: 8px; font-size: 14px;">Create your account to start booking sessions.</p>
+    </div>
+
+    <!-- Registration Form -->
+    <form id="register-form">
+      <div class="form-group">
+        <label for="reg-name" class="form-label">Full Name</label>
+        <input type="text" id="reg-name" class="form-input" placeholder="Arun Kumar" required>
+      </div>
+
+      <div class="form-group">
+        <label for="reg-email" class="form-label">Email Address</label>
+        <input type="email" id="reg-email" class="form-input" placeholder="arun@example.com" required>
+      </div>
+
+      <div class="form-group">
+        <label for="reg-phone" class="form-label">Phone Number</label>
+        <input type="tel" id="reg-phone" class="form-input" placeholder="9876543210" required pattern="[0-9]{10}">
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+        <div class="form-group">
+          <label for="reg-password" class="form-label">Password</label>
+          <input type="password" id="reg-password" class="form-input" placeholder="••••••••" required>
+        </div>
+        <div class="form-group">
+          <label for="reg-confirm" class="form-label">Confirm Password</label>
+          <input type="password" id="reg-confirm" class="form-input" placeholder="••••••••" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="checkbox-label">
+          <input type="checkbox" id="terms" required>
+          <span>I agree to the Terms & Privacy Policy</span>
+        </label>
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px; margin-top: 8px; font-size: 15px;">Create Account</button>
+    </form>
+
+    <!-- Switch links -->
+    <div style="text-align: center; margin-top: 24px; font-size: 14px; color: var(--text-secondary);">
+      <span>Already have an account? </span>
+      <a href="login.html" style="color: var(--primary-green); text-decoration: none; font-weight: 600;">Sign in</a>
+    </div>
+  </div>
+
+  <script src="../js/data.js"></script>
+  <script src="../js/storage.js"></script>
+  <script src="../js/app.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.getElementById("register-form");
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const name = document.getElementById("reg-name").value.trim();
+        const email = document.getElementById("reg-email").value.trim();
+        const phone = document.getElementById("reg-phone").value.trim();
+        const password = document.getElementById("reg-password").value;
+        const confirm = document.getElementById("reg-confirm").value;
+
+        if (password !== confirm) {
+          window.showToast("Passwords do not match!", "danger");
+          return;
+        }
+
+        const newUser = {
+          name,
+          email,
+          phone,
+          password,
+          role: "customer"
+        };
+
+        const result = window.registerUser(newUser);
+        if (result.success) {
+          window.showToast("Account created successfully!");
+          // Automatically log in user
+          window.loginUser(email, password);
+          setTimeout(() => {
+            window.location.href = "index.html";
+          }, 1200);
+        } else {
+          window.showToast(result.message, "danger");
+        }
+      });
+    });
+  </script>
+</body>
+</html>

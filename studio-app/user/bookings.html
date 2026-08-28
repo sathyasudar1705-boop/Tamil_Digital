@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Bookings - Aura Studio</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/user.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- Dynamic Navbar -->
+  <div id="navbar-placeholder"></div>
+
+  <!-- Dashboard Container Grid -->
+  <main class="dashboard-grid">
+    
+    <!-- Left Sidebar -->
+    <aside style="background: white; border: 1px solid var(--border); padding: 24px; border-radius: var(--radius-lg); height: fit-content; box-shadow: var(--shadow-sm);">
+      <div style="text-align: center; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--border);">
+        <img id="user-avatar" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80" alt="Profile" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid var(--light-green); margin-bottom: 12px;">
+        <h4 id="user-name" style="font-weight: 700; font-size: 16px; color: var(--text-primary);">Customer Name</h4>
+        <span class="badge badge-success" style="font-size: 11px;">Preferred Member</span>
+      </div>
+
+      <div class="dashboard-sidebar-menu">
+        <a href="dashboard.html" class="dashboard-sidebar-item">
+          <i data-lucide="layout-dashboard"></i> <span>Dashboard Overview</span>
+        </a>
+        <a href="bookings.html" class="dashboard-sidebar-item active">
+          <i data-lucide="calendar"></i> <span>My Bookings</span>
+        </a>
+        <a href="profile.html" class="dashboard-sidebar-item">
+          <i data-lucide="user"></i> <span>My Profile</span>
+        </a>
+        <a href="#" id="sidebar-logout" class="dashboard-sidebar-item" style="color: var(--danger);">
+          <i data-lucide="log-out"></i> <span>Logout</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- Right Content Panel -->
+    <section class="card" style="padding: 32px; box-shadow: var(--shadow-sm); min-height: 500px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px;">
+        <div>
+          <h1 style="font-size: 24px; font-weight: 800; color: var(--text-primary); margin-bottom: 4px;">My Session Bookings</h1>
+          <p style="color: var(--text-secondary); font-size: 14px;">Manage, reschedule, or cancel your photography appointments.</p>
+        </div>
+        <a href="booking.html" class="btn btn-primary btn-sm"><i data-lucide="plus" style="width: 16px; height: 16px;"></i> New Booking</a>
+      </div>
+
+      <!-- Bookings Table -->
+      <div class="table-container">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Booking ID</th>
+              <th>Service</th>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th style="text-align: right;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="bookings-tbody">
+            <!-- Populated via Javascript -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- View Details Modal -->
+  <div id="details-modal" class="modal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(15, 23, 42, 0.4); backdrop-filter: blur(4px); z-index: 99999; align-items: center; justify-content: center;">
+    <div class="card" style="max-width: 500px; width: 90%; padding: 32px; position: relative; animation: scaleUp 0.2s ease forwards;">
+      <button class="modal-close-trigger" style="position: absolute; top: 20px; right: 20px; background: none; border: none; cursor: pointer; color: var(--text-secondary);"><i data-lucide="x"></i></button>
+      
+      <h3 style="font-size: 20px; font-weight: 800; color: var(--text-primary); margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+        <i data-lucide="info" style="color: var(--primary-blue);"></i>
+        <span>Booking Details</span>
+      </h3>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; font-size: 14px; margin-bottom: 24px;">
+        <div>
+          <p style="color: var(--text-secondary); font-size: 12px; font-weight: 600;">Booking ID</p>
+          <p style="font-weight: 700; color: var(--text-primary);" id="detail-id">#BK-XXXX</p>
+        </div>
+        <div>
+          <p style="color: var(--text-secondary); font-size: 12px; font-weight: 600;">Current Status</p>
+          <span class="badge" id="detail-status">Pending</span>
+        </div>
+        <div>
+          <p style="color: var(--text-secondary); font-size: 12px; font-weight: 600;"> photoshoot Category</p>
+          <p style="font-weight: 600;" id="detail-service">Service</p>
+        </div>
+        <div>
+          <p style="color: var(--text-secondary); font-size: 12px; font-weight: 600;">Inclusions Tier</p>
+          <p style="font-weight: 600;" id="detail-package">Premium</p>
+        </div>
+        <div>
+          <p style="color: var(--text-secondary); font-size: 12px; font-weight: 600;">Date & Time</p>
+          <p style="font-weight: 600;" id="detail-schedule">2026-08-30 at 10:00</p>
+        </div>
+        <div>
+          <p style="color: var(--text-secondary); font-size: 12px; font-weight: 600;">Group Size</p>
+          <p style="font-weight: 600;" id="detail-people">1 Person</p>
+        </div>
+        <div style="grid-column: 1/-1;">
+          <p style="color: var(--text-secondary); font-size: 12px; font-weight: 600;">Additional Requirements</p>
+          <p style="background-color: var(--background); padding: 12px; border-radius: var(--radius-sm); font-size: 13px; color: var(--text-primary); border: 1px solid var(--border);" id="detail-requirements">None</p>
+        </div>
+        <div>
+          <p style="color: var(--text-secondary); font-size: 12px; font-weight: 600;">Grand Total Cost</p>
+          <p style="font-size: 18px; font-weight: 800; color: var(--primary-green);" id="detail-amount">₹0</p>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end;">
+        <button class="btn btn-primary modal-close-trigger">Close Details</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reschedule Modal -->
+  <div id="reschedule-modal" class="modal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(15, 23, 42, 0.4); backdrop-filter: blur(4px); z-index: 99999; align-items: center; justify-content: center;">
+    <div class="card" style="max-width: 440px; width: 90%; padding: 32px; position: relative; animation: scaleUp 0.2s ease forwards;">
+      <button class="reschedule-close-btn" style="position: absolute; top: 20px; right: 20px; background: none; border: none; cursor: pointer; color: var(--text-secondary);"><i data-lucide="x"></i></button>
+
+      <h3 style="font-size: 18px; font-weight: 800; color: var(--text-primary); margin-bottom: 20px; display: flex; align-items: center; gap: 8px;">
+        <i data-lucide="calendar" style="color: var(--primary-blue);"></i>
+        <span>Reschedule Appointment</span>
+      </h3>
+
+      <form id="reschedule-form">
+        <input type="hidden" id="reschedule-booking-id">
+        <div class="form-group">
+          <label class="form-label" for="resched-date">New Preferred Date</label>
+          <input type="date" id="resched-date" class="form-input" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="resched-time">New Preferred Time Slot</label>
+          <select id="resched-time" class="form-input" required>
+            <option value="09:00">09:00 AM</option>
+            <option value="10:30">10:30 AM</option>
+            <option value="12:00">12:00 PM</option>
+            <option value="13:30">01:30 PM</option>
+            <option value="15:00">03:00 PM</option>
+            <option value="16:30">04:30 PM</option>
+            <option value="18:00">06:00 PM</option>
+          </select>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px;">
+          <button type="button" class="btn btn-outline reschedule-close-btn">Cancel</button>
+          <button type="submit" class="btn btn-primary">Confirm Reschedule</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Dynamic Footer -->
+  <div id="footer-placeholder"></div>
+
+  <!-- Global scripts -->
+  <script src="../js/data.js"></script>
+  <script src="../js/storage.js"></script>
+  <script src="../js/app.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Guard route
+      window.requireCustomerAuth();
+
+      const user = window.getLoggedInUser();
+      const tbody = document.getElementById("bookings-tbody");
+
+      // Set tomorrow's date constraints for reschedule date picker
+      const reschedDateInput = document.getElementById("resched-date");
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      reschedDateInput.min = tomorrow.toISOString().split('T')[0];
+
+      function renderBookings() {
+        const bookings = window.getBookings ? window.getBookings() : [];
+        const userBookings = bookings.filter(b => b.customerEmail.toLowerCase() === user.email.toLowerCase());
+        
+        // Sort bookings by date descending
+        userBookings.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        if (userBookings.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="7" style="text-align: center; color: var(--text-secondary); padding: 48px;">
+                <i data-lucide="calendar" style="width: 48px; height: 48px; margin: 0 auto 16px auto; opacity: 0.3;"></i>
+                <p style="font-weight: 500;">No session bookings found.</p>
+                <a href="booking.html" class="btn btn-primary btn-sm" style="margin-top: 16px;">Schedule Your First Session</a>
+              </td>
+            </tr>
+          `;
+          if (window.lucide) window.lucide.createIcons();
+          return;
+        }
+
+        tbody.innerHTML = userBookings.map(b => {
+          let statusBadge = "badge-info";
+          if (b.status === "Confirmed") statusBadge = "badge-success";
+          if (b.status === "Completed") statusBadge = "badge-success";
+          if (b.status === "Cancelled") statusBadge = "badge-danger";
+          if (b.status === "Pending") statusBadge = "badge-warning";
+
+          // Disable cancel/reschedule if completed or cancelled
+          const isInactive = b.status === "Completed" || b.status === "Cancelled";
+
+          return `
+            <tr>
+              <td><strong>#${b.id}</strong></td>
+              <td>
+                <div style="font-weight: 600; color: var(--text-primary);">${b.serviceName}</div>
+                <div style="font-size: 11px; color: var(--text-secondary);">${b.packageName} package</div>
+              </td>
+              <td>${b.date}</td>
+              <td>${b.time}</td>
+              <td><strong>₹${b.amount.toLocaleString('en-IN')}</strong></td>
+              <td><span class="badge ${statusBadge}">${b.status}</span></td>
+              <td style="text-align: right;">
+                <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                  <button class="btn btn-outline btn-sm view-details-btn" data-id="${b.id}" title="View Details">
+                    <i data-lucide="eye" style="width: 14px; height: 14px;"></i>
+                  </button>
+                  ${!isInactive ? `
+                    <button class="btn btn-outline btn-sm reschedule-btn" data-id="${b.id}" data-date="${b.date}" data-time="${b.time}" title="Reschedule Session">
+                      <i data-lucide="edit-3" style="width: 14px; height: 14px; color: var(--primary-blue);"></i>
+                    </button>
+                    <button class="btn btn-outline btn-sm cancel-btn" data-id="${b.id}" title="Cancel Session">
+                      <i data-lucide="trash-2" style="width: 14px; height: 14px; color: var(--danger);"></i>
+                    </button>
+                  ` : ''}
+                </div>
+              </td>
+            </tr>
+          `;
+        }).join("");
+
+        if (window.lucide) window.lucide.createIcons();
+
+        // 1. Details triggers
+        tbody.querySelectorAll(".view-details-btn").forEach(btn => {
+          btn.addEventListener("click", () => {
+            const bId = btn.getAttribute("data-id");
+            const bookingsList = window.getBookings();
+            const b = bookingsList.find(item => item.id === bId);
+            if (b) {
+              document.getElementById("detail-id").textContent = `#${b.id}`;
+              document.getElementById("detail-status").textContent = b.status;
+              
+              // Dynamic status badge color inside modal
+              const badge = document.getElementById("detail-status");
+              badge.className = "badge";
+              if (b.status === "Confirmed" || b.status === "Completed") badge.classList.add("badge-success");
+              else if (b.status === "Cancelled") badge.classList.add("badge-danger");
+              else badge.classList.add("badge-warning");
+
+              document.getElementById("detail-service").textContent = b.serviceName;
+              document.getElementById("detail-package").textContent = b.packageName + " Package";
+              document.getElementById("detail-schedule").textContent = b.date + " at " + b.time;
+              document.getElementById("detail-people").textContent = b.peopleCount + (b.peopleCount > 1 ? " People" : " Person");
+              document.getElementById("detail-requirements").textContent = b.requirements || "No additional requirements specified.";
+              document.getElementById("detail-amount").textContent = `₹${b.amount.toLocaleString('en-IN')}`;
+
+              document.getElementById("details-modal").style.display = "flex";
+            }
+          });
+        });
+
+        // 2. Reschedule triggers
+        tbody.querySelectorAll(".reschedule-btn").forEach(btn => {
+          btn.addEventListener("click", () => {
+            const bId = btn.getAttribute("data-id");
+            const bDate = btn.getAttribute("data-date");
+            const bTime = btn.getAttribute("data-time");
+
+            document.getElementById("reschedule-booking-id").value = bId;
+            reschedDateInput.value = bDate;
+            document.getElementById("resched-time").value = bTime;
+
+            document.getElementById("reschedule-modal").style.display = "flex";
+          });
+        });
+
+        // 3. Cancel triggers
+        tbody.querySelectorAll(".cancel-btn").forEach(btn => {
+          btn.addEventListener("click", () => {
+            const bId = btn.getAttribute("data-id");
+            window.createConfirmationModal(
+              "Cancel Session Booking?",
+              "Are you sure you want to cancel this photography session booking? This action is irreversible.",
+              "Yes, Cancel Session",
+              "Keep Booking",
+              () => {
+                window.cancelBooking(bId);
+                window.showToast("Booking cancelled successfully", "warning");
+                renderBookings();
+              }
+            );
+          });
+        });
+      }
+
+      // Initial run
+      if (user) {
+        document.getElementById("user-name").textContent = user.name;
+        document.getElementById("user-avatar").setAttribute("src", user.avatar || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80");
+        renderBookings();
+      }
+
+      // Modals Close handlers
+      const detailModal = document.getElementById("details-modal");
+      detailModal.querySelectorAll(".modal-close-trigger").forEach(btn => {
+        btn.addEventListener("click", () => {
+          detailModal.style.display = "none";
+        });
+      });
+      detailModal.addEventListener("click", (e) => {
+        if (e.target === detailModal) detailModal.style.display = "none";
+      });
+
+      const reschedModal = document.getElementById("reschedule-modal");
+      reschedModal.querySelectorAll(".reschedule-close-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          reschedModal.style.display = "none";
+        });
+      });
+      reschedModal.addEventListener("click", (e) => {
+        if (e.target === reschedModal) reschedModal.style.display = "none";
+      });
+
+      // Submit Reschedule form
+      document.getElementById("reschedule-form").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const bId = document.getElementById("reschedule-booking-id").value;
+        const newDate = reschedDateInput.value;
+        const newTime = document.getElementById("resched-time").value;
+
+        window.updateBooking(bId, {
+          date: newDate,
+          time: newTime,
+          status: "Pending" // Automatically sets status back to pending for approval check
+        });
+
+        reschedModal.style.display = "none";
+        window.showToast("Booking rescheduled! Pending admin confirmation.");
+        renderBookings();
+      });
+
+      // Sidebar logout
+      document.getElementById("sidebar-logout").addEventListener("click", (e) => {
+        e.preventDefault();
+        window.logoutUser();
+        window.showToast("Logged out successfully");
+        setTimeout(() => {
+          window.location.href = "index.html";
+        }, 1000);
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Packages - Aura Studio</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/admin.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <div class="admin-layout">
+    <!-- Dynamic Sidebar -->
+    <div id="admin-sidebar-placeholder"></div>
+
+    <!-- Main Panel -->
+    <main class="admin-main">
+      <!-- Dynamic Header -->
+      <div id="admin-header-placeholder"></div>
+
+      <!-- Page Content -->
+      <div class="admin-content">
+        <div class="admin-page-header">
+          <div>
+            <h1 class="admin-page-title">Manage Packages</h1>
+            <p style="color: var(--text-secondary); font-size: 14px;">Configure session pricing package options, durations, and inclusion features.</p>
+          </div>
+          <button id="add-package-btn" class="btn btn-primary"><i data-lucide="plus"></i> Add Package</button>
+        </div>
+
+        <!-- Packages Table Card -->
+        <div class="card" style="padding: 0; overflow: hidden; border-radius: var(--radius-md);">
+          <div class="table-container" style="border: none; border-radius: 0;">
+            <table class="custom-table">
+              <thead>
+                <tr>
+                  <th>Package Name</th>
+                  <th>Price Rate</th>
+                  <th>Duration</th>
+                  <th>Inclusion Features</th>
+                  <th>Popular Badge</th>
+                  <th>Status</th>
+                  <th style="text-align: right;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="packages-table-body">
+                <!-- Dynamically filled -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Add/Edit Package Modal -->
+  <div id="package-modal" class="modal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(15, 23, 42, 0.4); backdrop-filter: blur(4px); z-index: 99999; align-items: center; justify-content: center;">
+    <div class="card" style="max-width: 480px; width: 90%; padding: 32px; position: relative; animation: scaleUp 0.2s ease forwards;">
+      <button class="close-modal-btn" style="position: absolute; top: 20px; right: 20px; background: none; border: none; cursor: pointer; color: var(--text-secondary);"><i data-lucide="x"></i></button>
+      
+      <h3 style="font-size: 18px; font-weight: 800; color: var(--text-primary); margin-bottom: 24px;" id="modal-title">Add New Package</h3>
+
+      <form id="package-form">
+        <input type="hidden" id="pkg-id">
+        
+        <div class="form-group">
+          <label class="form-label" for="pkg-name">Package Name</label>
+          <input type="text" id="pkg-name" class="form-input" placeholder="Enterprise" required>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div class="form-group">
+            <label class="form-label" for="pkg-price">Price Rate (₹)</label>
+            <input type="number" id="pkg-price" class="form-input" placeholder="5999" required min="0">
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label" for="pkg-duration">Duration Limit</label>
+            <input type="text" id="pkg-duration" class="form-input" placeholder="3 Hours Session" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="pkg-inclusions">Inclusions (Comma separated list)</label>
+          <textarea id="pkg-inclusions" class="form-input" placeholder="2 Photographers, 30 Edited Soft Copies, Online Private Gallery..." required></textarea>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div class="form-group">
+            <label class="form-label" for="pkg-popular">Highlight Popular</label>
+            <select id="pkg-popular" class="form-input" required>
+              <option value="false">No</option>
+              <option value="true">Yes (Add Badge)</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label" for="pkg-status">Package Status</label>
+            <select id="pkg-status" class="form-input" required>
+              <option value="active" selected>Active</option>
+              <option value="inactive">Inactive</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 28px;">
+          <button type="button" class="btn btn-outline close-modal-btn">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Package</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Global Admin Scripts -->
+  <script src="../js/data.js"></script>
+  <script src="../js/storage.js"></script>
+  <script src="../js/app.js"></script>
+  <script src="../js/admin.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const tbody = document.getElementById("packages-table-body");
+      const modal = document.getElementById("package-modal");
+      const form = document.getElementById("package-form");
+      const modalTitle = document.getElementById("modal-title");
+      const addPackageBtn = document.getElementById("add-package-btn");
+      
+      const inputId = document.getElementById("pkg-id");
+      const inputName = document.getElementById("pkg-name");
+      const inputPrice = document.getElementById("pkg-price");
+      const inputDuration = document.getElementById("pkg-duration");
+      const inputInclusions = document.getElementById("pkg-inclusions");
+      const inputPopular = document.getElementById("pkg-popular");
+      const inputStatus = document.getElementById("pkg-status");
+
+      function renderPackages() {
+        const list = window.getPackages ? window.getPackages() : [];
+        const searchInput = document.getElementById("global-admin-search");
+        let query = searchInput ? searchInput.value.toLowerCase().trim() : "";
+
+        let filtered = list;
+        if (query) {
+          filtered = list.filter(p => 
+            p.name.toLowerCase().includes(query) ||
+            p.duration.toLowerCase().includes(query)
+          );
+        }
+
+        if (filtered.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="7" style="text-align: center; color: var(--text-secondary); padding: 48px;">
+                <p>No packages found.</p>
+              </td>
+            </tr>
+          `;
+          return;
+        }
+
+        tbody.innerHTML = filtered.map(p => `
+          <tr>
+            <td><strong>${p.name}</strong></td>
+            <td><strong>₹${p.price.toLocaleString('en-IN')}</strong></td>
+            <td>${p.duration}</td>
+            <td>
+              <div style="max-width: 250px; font-size: 12px; color: var(--text-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${p.inclusions.join(', ')}">
+                ${p.inclusions.join(", ")}
+              </div>
+            </td>
+            <td><span class="badge ${p.isPopular ? 'badge-info' : 'badge-danger'}">${p.isPopular ? 'Popular' : 'Standard'}</span></td>
+            <td><span class="badge ${p.status === 'active' ? 'badge-success' : 'badge-danger'}">${p.status}</span></td>
+            <td style="text-align: right;">
+              <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                <button class="btn btn-outline btn-sm edit-btn" data-id="${p.id}">Edit</button>
+                <button class="btn btn-outline btn-sm delete-btn" data-id="${p.id}"><i data-lucide="trash-2" style="width: 14px; height: 14px; color: var(--danger);"></i></button>
+              </div>
+            </td>
+          </tr>
+        `).join("");
+
+        if (window.lucide) window.lucide.createIcons();
+
+        // Bind events
+        tbody.querySelectorAll(".edit-btn").forEach(btn => {
+          btn.addEventListener("click", () => {
+            const pId = btn.getAttribute("data-id");
+            const p = list.find(item => item.id === pId);
+            if (p) {
+              inputId.value = p.id;
+              inputName.value = p.name;
+              inputPrice.value = p.price;
+              inputDuration.value = p.duration;
+              inputInclusions.value = p.inclusions.join(", ");
+              inputPopular.value = p.isPopular ? "true" : "false";
+              inputStatus.value = p.status;
+
+              modalTitle.textContent = "Edit Pricing Package";
+              modal.style.display = "flex";
+            }
+          });
+        });
+
+        tbody.querySelectorAll(".delete-btn").forEach(btn => {
+          btn.addEventListener("click", () => {
+            const pId = btn.getAttribute("data-id");
+            window.createConfirmationModal(
+              "Delete Pricing Plan?",
+              "Are you sure you want to delete this package? Booking page configurations will update.",
+              "Yes, Delete Plan",
+              "Keep Plan",
+              () => {
+                window.deletePackage(pId);
+                window.showToast("Package deleted successfully", "warning");
+                renderPackages();
+              }
+            );
+          });
+        });
+      }
+
+      // Initial run
+      renderPackages();
+
+      // Live search input changes
+      const searchInput = document.getElementById("global-admin-search");
+      if (searchInput) {
+        searchInput.addEventListener("input", renderPackages);
+      }
+
+      // Add package trigger
+      addPackageBtn.addEventListener("click", () => {
+        form.reset();
+        inputId.value = "";
+        modalTitle.textContent = "Add New Package";
+        modal.style.display = "flex";
+      });
+
+      // Close modal actions
+      function closeModal() {
+        modal.style.display = "none";
+      }
+      modal.querySelectorAll(".close-modal-btn").forEach(btn => {
+        btn.addEventListener("click", closeModal);
+      });
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) closeModal();
+      });
+
+      // Submit modal form
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const id = inputId.value;
+        const nameVal = inputName.value.trim();
+        const priceVal = parseInt(inputPrice.value) || 0;
+        const durationVal = inputDuration.value.trim();
+        const inclusionsVal = inputInclusions.value.split(',').map(item => item.trim()).filter(item => item !== "");
+        const popularVal = inputPopular.value === "true";
+        const statusVal = inputStatus.value;
+
+        const payload = {
+          name: nameVal,
+          price: priceVal,
+          duration: durationVal,
+          inclusions: inclusionsVal,
+          isPopular: popularVal,
+          status: statusVal
+        };
+
+        if (id) {
+          window.updatePackage(id, payload);
+          window.showToast("Package updated successfully");
+        } else {
+          window.addPackage(payload);
+          window.showToast("Package added successfully");
+        }
+
+        closeModal();
+        renderPackages();
+      });
+
+    });
+  </script>
+</body>
+</html>

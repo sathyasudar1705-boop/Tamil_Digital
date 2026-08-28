@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Ledger - Aura Studio</title>
+  <link style="text/css" rel="stylesheet" href="../css/style.css">
+  <link style="text/css" rel="stylesheet" href="../css/admin.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <div class="admin-layout">
+    <!-- Dynamic Sidebar -->
+    <div id="admin-sidebar-placeholder"></div>
+
+    <!-- Main Panel -->
+    <main class="admin-main">
+      <!-- Dynamic Header -->
+      <div id="admin-header-placeholder"></div>
+
+      <!-- Page Content -->
+      <div class="admin-content">
+        <div class="admin-page-header">
+          <div>
+            <h1 class="admin-page-title">Payment Ledger</h1>
+            <p style="color: var(--text-secondary); font-size: 14px;">Audit transaction logs, paid amounts, payment methods, and refunds.</p>
+          </div>
+        </div>
+
+        <!-- Ledger Table Card -->
+        <div class="card" style="padding: 0; overflow: hidden; border-radius: var(--radius-md);">
+          <div class="table-container" style="border: none; border-radius: 0;">
+            <table class="custom-table">
+              <thead>
+                <tr>
+                  <th>Payment ID</th>
+                  <th>Customer</th>
+                  <th>Booking ID</th>
+                  <th>Method</th>
+                  <th>Amount</th>
+                  <th>Log Date</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="payments-table-body">
+                <!-- Dynamically filled -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Global Admin Scripts -->
+  <script src="../js/data.js"></script>
+  <script src="../js/storage.js"></script>
+  <script src="../js/app.js"></script>
+  <script src="../js/admin.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const tbody = document.getElementById("payments-table-body");
+
+      function renderPayments() {
+        const list = window.getPayments ? window.getPayments() : [];
+        const searchInput = document.getElementById("global-admin-search");
+        let query = searchInput ? searchInput.value.toLowerCase().trim() : "";
+
+        let filtered = list;
+        if (query) {
+          filtered = list.filter(p => 
+            p.id.toLowerCase().includes(query) ||
+            p.bookingId.toLowerCase().includes(query) ||
+            p.customerName.toLowerCase().includes(query) ||
+            p.method.toLowerCase().includes(query)
+          );
+        }
+
+        // Sort payments by date descending
+        filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        if (filtered.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="7" style="text-align: center; color: var(--text-secondary); padding: 48px;">
+                <p>No transactions logged.</p>
+              </td>
+            </tr>
+          `;
+          return;
+        }
+
+        tbody.innerHTML = filtered.map(p => {
+          let badgeClass = "badge-info";
+          if (p.status === "Paid") badgeClass = "badge-success";
+          if (p.status === "Pending") badgeClass = "badge-warning";
+          if (p.status === "Refunded") badgeClass = "badge-danger";
+
+          return `
+            <tr>
+              <td><strong>#${p.id}</strong></td>
+              <td>${p.customerName}</td>
+              <td><strong>#${p.bookingId}</strong></td>
+              <td>${p.method}</td>
+              <td><strong>₹${p.amount.toLocaleString('en-IN')}</strong></td>
+              <td>${p.date}</td>
+              <td><span class="badge ${badgeClass}">${p.status}</span></td>
+            </tr>
+          `;
+        }).join("");
+      }
+
+      // Initial run
+      renderPayments();
+
+      // Live search input changes
+      const searchInput = document.getElementById("global-admin-search");
+      if (searchInput) {
+        searchInput.addEventListener("input", renderPayments);
+      }
+    });
+  </script>
+</body>
+</html>

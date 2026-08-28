@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Aura Studio</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/user.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background-color: var(--background); padding: 24px;">
+
+  <div class="card" style="width: 100%; max-width: 420px; box-shadow: var(--shadow-xl); padding: 40px;">
+    <!-- Logo -->
+    <div style="text-align: center; margin-bottom: 32px;">
+      <a href="index.html" style="font-size: 24px; font-weight: 800; color: var(--text-primary); text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+        <i data-lucide="camera" style="color: var(--primary-green); width: 32px; height: 32px;"></i>
+        <span>Aura<span style="color: var(--primary-green);">Studio</span></span>
+      </a>
+      <p style="color: var(--text-secondary); margin-top: 8px; font-size: 14px;">Welcome back! Please enter your details.</p>
+    </div>
+
+    <!-- Alert for Admin redirect -->
+    <div id="admin-warning-alert" style="display: none; background-color: #FEF3C7; border: 1px solid #F59E0B; color: #D97706; padding: 12px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 500; margin-bottom: 20px; display: flex; align-items: flex-start; gap: 8px;">
+      <i data-lucide="alert-triangle" style="width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px;"></i>
+      <span>Access Restricted. Admin login is required to access the dashboard. Use <strong>admin@studio.com</strong> / <strong>admin123</strong>.</span>
+    </div>
+
+    <!-- Login Form -->
+    <form id="login-form">
+      <div class="form-group">
+        <label for="email" class="form-label">Email Address</label>
+        <input type="email" id="email" class="form-input" placeholder="you@example.com" required value="customer@gmail.com">
+      </div>
+
+      <div class="form-group">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <label for="password" class="form-label" style="margin: 0;">Password</label>
+          <a href="#" id="forgot-password-link" style="font-size: 13px; color: var(--primary-green); text-decoration: none; font-weight: 600;">Forgot password?</a>
+        </div>
+        <input type="password" id="password" class="form-input" placeholder="••••••••" required value="customer123">
+      </div>
+
+      <div class="form-group" style="display: flex; justify-content: space-between; align-items: center;">
+        <label class="checkbox-label">
+          <input type="checkbox" id="remember-me">
+          <span>Remember me</span>
+        </label>
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px; margin-top: 8px; font-size: 15px;">Sign In</button>
+    </form>
+
+    <!-- Switch links -->
+    <div style="text-align: center; margin-top: 28px; font-size: 14px; color: var(--text-secondary);">
+      <span>Don't have an account? </span>
+      <a href="register.html" style="color: var(--primary-green); text-decoration: none; font-weight: 600;">Sign up</a>
+    </div>
+
+    <!-- Quick Credentials Helper -->
+    <div style="background-color: var(--soft-blue); border: 1px solid var(--light-blue); padding: 14px; border-radius: var(--radius-sm); margin-top: 28px; font-size: 12px; color: var(--text-primary);">
+      <p style="font-weight: 700; margin-bottom: 6px; color: var(--primary-blue);">Demo Accounts Quick Fill:</p>
+      <div style="display: flex; flex-direction: column; gap: 4px;">
+        <p>• <strong>Customer</strong>: customer@gmail.com / customer123</p>
+        <p>• <strong>Admin</strong>: admin@studio.com / admin123</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/data.js"></script>
+  <script src="../js/storage.js"></script>
+  <script src="../js/app.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Check query params for admin redirect warning
+      const params = new URLSearchParams(window.location.search);
+      const isWarning = params.get("admin_redirect") === "1";
+      const warningAlert = document.getElementById("admin-warning-alert");
+      if (isWarning && warningAlert) {
+        warningAlert.style.display = "flex";
+        // Pre-fill admin credentials
+        document.getElementById("email").value = "admin@studio.com";
+        document.getElementById("password").value = "admin123";
+      }
+
+      // Login form handling
+      const form = document.getElementById("login-form");
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
+
+        const result = window.loginUser(email, password);
+        if (result.success) {
+          window.showToast("Logged in successfully!");
+          setTimeout(() => {
+            if (result.user.role === "admin") {
+              window.location.href = "../admin/index.html";
+            } else {
+              // If there was a pending booking attempt, we can redirect back to booking, or defaults to index
+              const next = params.get("next");
+              if (next) {
+                window.location.href = next;
+              } else {
+                window.location.href = "index.html";
+              }
+            }
+          }, 1000);
+        } else {
+          window.showToast(result.message, "danger");
+        }
+      });
+
+      // Forgot password trigger
+      const forgotLink = document.getElementById("forgot-password-link");
+      forgotLink.addEventListener("click", (e) => {
+        e.preventDefault();
+        window.showToast("Password reset link sent to your email (Mocked)", "info");
+      });
+    });
+  </script>
+</body>
+</html>

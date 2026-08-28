@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile - Aura Studio</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/user.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- Dynamic Navbar -->
+  <div id="navbar-placeholder"></div>
+
+  <!-- Dashboard Container Grid -->
+  <main class="dashboard-grid">
+    
+    <!-- Left Sidebar -->
+    <aside style="background: white; border: 1px solid var(--border); padding: 24px; border-radius: var(--radius-lg); height: fit-content; box-shadow: var(--shadow-sm);">
+      <div style="text-align: center; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--border);">
+        <img id="user-avatar" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80" alt="Profile" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid var(--light-green); margin-bottom: 12px;">
+        <h4 id="user-name" style="font-weight: 700; font-size: 16px; color: var(--text-primary);">Customer Name</h4>
+        <span class="badge badge-success" style="font-size: 11px;">Preferred Member</span>
+      </div>
+
+      <div class="dashboard-sidebar-menu">
+        <a href="dashboard.html" class="dashboard-sidebar-item">
+          <i data-lucide="layout-dashboard"></i> <span>Dashboard Overview</span>
+        </a>
+        <a href="bookings.html" class="dashboard-sidebar-item">
+          <i data-lucide="calendar"></i> <span>My Bookings</span>
+        </a>
+        <a href="profile.html" class="dashboard-sidebar-item active">
+          <i data-lucide="user"></i> <span>My Profile</span>
+        </a>
+        <a href="#" id="sidebar-logout" class="dashboard-sidebar-item" style="color: var(--danger);">
+          <i data-lucide="log-out"></i> <span>Logout</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- Right Profile Panel -->
+    <section class="card" style="padding: 40px; box-shadow: var(--shadow-sm); min-height: 500px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; border-bottom: 1px solid var(--border); padding-bottom: 20px;">
+        <div>
+          <h1 style="font-size: 24px; font-weight: 800; color: var(--text-primary); margin-bottom: 4px;">My Profile Settings</h1>
+          <p style="color: var(--text-secondary); font-size: 14px;">Update your personal details and contact preferences.</p>
+        </div>
+        <button id="edit-profile-btn" class="btn btn-outline"><i data-lucide="edit" style="width: 16px; height: 16px;"></i> Edit Profile</button>
+      </div>
+
+      <form id="profile-form">
+        <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 32px;">
+          <div style="position: relative;">
+            <img id="form-avatar-preview" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80" alt="Avatar" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 1px solid var(--border);">
+            <div id="avatar-edit-overlay" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; background-color: rgba(30, 41, 59, 0.6); align-items: center; justify-content: center; cursor: pointer;">
+              <i data-lucide="camera" style="color: white; width: 24px; height: 24px;"></i>
+            </div>
+          </div>
+          <p style="color: var(--text-secondary); font-size: 11px; margin-top: 8px;">Click to update profile avatar (Simulated URL input)</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+          <div class="form-group">
+            <label class="form-label" for="p-name">Full Name</label>
+            <input type="text" id="p-name" class="form-input" disabled required>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label" for="p-email">Email Address</label>
+            <input type="email" id="p-email" class="form-input" disabled required style="background-color: var(--background); cursor: not-allowed;">
+            <span style="font-size: 11px; color: var(--text-secondary); display: block; margin-top: 4px;">Email address cannot be changed.</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="p-phone">Phone Number</label>
+            <input type="tel" id="p-phone" class="form-input" disabled required pattern="[0-9]{10}">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="p-dob">Date of Birth</label>
+            <input type="date" id="p-dob" class="form-input" disabled>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 8px;">
+          <label class="form-label" for="p-address">Postal Address</label>
+          <textarea id="p-address" class="form-input" disabled placeholder="Enter your full street address details here..."></textarea>
+        </div>
+
+        <div style="display: none; justify-content: flex-end; gap: 12px; margin-top: 32px; border-top: 1px solid var(--border); padding-top: 24px;" id="form-actions-wrapper">
+          <button type="button" id="cancel-edit-btn" class="btn btn-outline">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+      </form>
+    </section>
+
+  </main>
+
+  <!-- Dynamic Footer -->
+  <div id="footer-placeholder"></div>
+
+  <!-- Global scripts -->
+  <script src="../js/data.js"></script>
+  <script src="../js/storage.js"></script>
+  <script src="../js/app.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Guard route
+      window.requireCustomerAuth();
+
+      const user = window.getLoggedInUser();
+      const form = document.getElementById("profile-form");
+      const editBtn = document.getElementById("edit-profile-btn");
+      const cancelBtn = document.getElementById("cancel-edit-btn");
+      const actionsWrapper = document.getElementById("form-actions-wrapper");
+      const avatarOverlay = document.getElementById("avatar-edit-overlay");
+      
+      const inputsToToggle = [
+        document.getElementById("p-name"),
+        document.getElementById("p-phone"),
+        document.getElementById("p-dob"),
+        document.getElementById("p-address")
+      ];
+
+      function fillForm() {
+        if (user) {
+          document.getElementById("user-name").textContent = user.name;
+          document.getElementById("user-avatar").setAttribute("src", user.avatar || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80");
+          document.getElementById("form-avatar-preview").setAttribute("src", user.avatar || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80");
+
+          document.getElementById("p-name").value = user.name;
+          document.getElementById("p-email").value = user.email;
+          document.getElementById("p-phone").value = user.phone;
+          document.getElementById("p-dob").value = user.dob || "";
+          document.getElementById("p-address").value = user.address || "";
+        }
+      }
+
+      // Initial form filling
+      fillForm();
+
+      // Edit click toggles fields to enabled
+      editBtn.addEventListener("click", () => {
+        inputsToToggle.forEach(inp => inp.disabled = false);
+        editBtn.style.display = "none";
+        actionsWrapper.style.display = "flex";
+        avatarOverlay.style.display = "flex";
+      });
+
+      // Cancel revert fields and disable
+      cancelBtn.addEventListener("click", () => {
+        fillForm();
+        inputsToToggle.forEach(inp => inp.disabled = true);
+        editBtn.style.display = "flex";
+        actionsWrapper.style.display = "none";
+        avatarOverlay.style.display = "none";
+      });
+
+      // Submit changes
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const nameVal = document.getElementById("p-name").value.trim();
+        const phoneVal = document.getElementById("p-phone").value.trim();
+        const dobVal = document.getElementById("p-dob").value;
+        const addressVal = document.getElementById("p-address").value.trim();
+        const avatarVal = document.getElementById("form-avatar-preview").getAttribute("src");
+
+        const updatedData = {
+          name: nameVal,
+          phone: phoneVal,
+          dob: dobVal,
+          address: addressVal,
+          avatar: avatarVal
+        };
+
+        window.updateUserProfile(user.email, updatedData);
+        window.showToast("Profile updated successfully!");
+
+        // Refresh global session variables locally
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      });
+
+      // Change avatar (simulated url popup)
+      avatarOverlay.addEventListener("click", () => {
+        const newUrl = prompt("Enter complete image URL for profile photo:", user.avatar || "");
+        if (newUrl !== null && newUrl.trim() !== "") {
+          document.getElementById("form-avatar-preview").setAttribute("src", newUrl.trim());
+        }
+      });
+
+      // Sidebar logout
+      document.getElementById("sidebar-logout").addEventListener("click", (e) => {
+        e.preventDefault();
+        window.logoutUser();
+        window.showToast("Logged out successfully");
+        setTimeout(() => {
+          window.location.href = "index.html";
+        }, 1000);
+      });
+
+      if (window.lucide) window.lucide.createIcons();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallery - Aura Studio</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/user.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- Dynamic Navbar -->
+  <div id="navbar-placeholder"></div>
+
+  <!-- Header Banner -->
+  <header style="background: linear-gradient(135deg, var(--soft-green) 0%, var(--soft-blue) 100%); padding: 64px 24px; text-align: center; border-bottom: 1px solid var(--border);">
+    <div style="max-width: 800px; margin: 0 auto;">
+      <h1 style="font-size: 36px; font-weight: 800; color: var(--text-primary); margin-bottom: 8px;">Our Photo Portfolio</h1>
+      <p style="color: var(--text-secondary); font-size: 15px;">A collection of beautiful memories and commercial projects shot in our studio and on-site.</p>
+    </div>
+  </header>
+
+  <!-- Gallery Main Section -->
+  <main class="container" style="padding: 64px 24px;">
+    <!-- Filter Tabs -->
+    <div class="gallery-filter-tabs" id="filter-tabs-container">
+      <button class="filter-tab active" data-category="all">All Photos</button>
+      <button class="filter-tab" data-category="portrait">Portrait</button>
+      <button class="filter-tab" data-category="wedding">Wedding</button>
+      <button class="filter-tab" data-category="pre-wedding">Pre-Wedding</button>
+      <button class="filter-tab" data-category="product">Product</button>
+      <button class="filter-tab" data-category="events">Events</button>
+    </div>
+
+    <!-- Gallery Grid -->
+    <div class="gallery-grid" id="gallery-grid-container">
+      <!-- Populated via javascript -->
+    </div>
+  </main>
+
+  <!-- Lightbox Modal -->
+  <div id="gallery-lightbox" class="lightbox-modal">
+    <div class="lightbox-content-box">
+      <button class="lightbox-close" id="close-lightbox"><i data-lucide="x"></i></button>
+      <img id="lightbox-image" class="lightbox-img" src="" alt="Lightbox Showcase">
+      <p id="lightbox-title" class="lightbox-caption">Caption</p>
+    </div>
+  </div>
+
+  <!-- Dynamic Footer -->
+  <div id="footer-placeholder"></div>
+
+  <!-- Global scripts -->
+  <script src="../js/data.js"></script>
+  <script src="../js/storage.js"></script>
+  <script src="../js/app.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const galleryItems = window.getGallery ? window.getGallery() : [];
+      const gridContainer = document.getElementById("gallery-grid-container");
+      const tabContainer = document.getElementById("filter-tabs-container");
+      const tabs = tabContainer.querySelectorAll(".filter-tab");
+      
+      // Lightbox elements
+      const lightbox = document.getElementById("gallery-lightbox");
+      const lightboxImg = document.getElementById("lightbox-image");
+      const lightboxTitle = document.getElementById("lightbox-title");
+      const closeLightboxBtn = document.getElementById("close-lightbox");
+
+      // Render gallery grid
+      function renderGallery(filterCategory = "all") {
+        const filtered = filterCategory === "all" 
+          ? galleryItems 
+          : galleryItems.filter(item => item.category.toLowerCase() === filterCategory.toLowerCase());
+
+        if (filtered.length === 0) {
+          gridContainer.innerHTML = `
+            <div style="grid-column: 1/-1; text-align: center; padding: 64px; color: var(--text-secondary);">
+              <i data-lucide="image-off" style="width: 48px; height: 48px; margin: 0 auto 16px auto; opacity: 0.5;"></i>
+              <p>No photos in this category yet.</p>
+            </div>
+          `;
+          if (window.lucide) window.lucide.createIcons();
+          return;
+        }
+
+        gridContainer.innerHTML = filtered.map(item => `
+          <div class="gallery-item" data-url="${item.url}" data-title="${item.title}">
+            <img src="${item.url}" alt="${item.title}" loading="lazy">
+            <div class="gallery-item-overlay">
+              <span class="gallery-title">${item.title}</span>
+            </div>
+          </div>
+        `).join("");
+
+        // Attach click triggers for Lightbox
+        const items = gridContainer.querySelectorAll(".gallery-item");
+        items.forEach(el => {
+          el.addEventListener("click", () => {
+            const url = el.getAttribute("data-url");
+            const title = el.getAttribute("data-title");
+            
+            lightboxImg.setAttribute("src", url);
+            lightboxTitle.textContent = title;
+            lightbox.style.display = "flex";
+          });
+        });
+      }
+
+      // Initial run
+      renderGallery("all");
+
+      // Filter tabs event listener
+      tabs.forEach(tab => {
+        tab.addEventListener("click", () => {
+          tabs.forEach(t => t.classList.remove("active"));
+          tab.classList.add("active");
+          const category = tab.getAttribute("data-category");
+          renderGallery(category);
+        });
+      });
+
+      // Lightbox close handles
+      function closeLightbox() {
+        lightbox.style.display = "none";
+      }
+      closeLightboxBtn.addEventListener("click", closeLightbox);
+      lightbox.addEventListener("click", (e) => {
+        if (e.target === lightbox || e.target.closest('.lightbox-close')) {
+          closeLightbox();
+        }
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeLightbox();
+      });
+    });
+  </script>
+</body>
+</html>

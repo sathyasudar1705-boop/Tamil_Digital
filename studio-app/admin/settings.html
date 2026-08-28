@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Studio Settings - Aura Studio</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/admin.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <div class="admin-layout">
+    <!-- Dynamic Sidebar -->
+    <div id="admin-sidebar-placeholder"></div>
+
+    <!-- Main Panel -->
+    <main class="admin-main">
+      <!-- Dynamic Header -->
+      <div id="admin-header-placeholder"></div>
+
+      <!-- Page Content -->
+      <div class="admin-content">
+        <div class="admin-page-header">
+          <div>
+            <h1 class="admin-page-title">Studio Settings</h1>
+            <p style="color: var(--text-secondary); font-size: 14px;">Configure general studio preferences, contacts, operating hours, and currency.</p>
+          </div>
+        </div>
+
+        <!-- Settings Cards -->
+        <div class="card" style="max-width: 600px; padding: 40px; box-shadow: var(--shadow-sm);">
+          <h3 style="font-size: 18px; font-weight: 700; color: var(--text-primary); margin-bottom: 24px; border-bottom: 1px solid var(--border); padding-bottom: 12px;">General Configuration</h3>
+          
+          <form id="settings-form">
+            <div class="form-group">
+              <label class="form-label" for="set-name">Studio Business Name</label>
+              <input type="text" id="set-name" class="form-input" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="set-headline">Landing Headline Tag</label>
+              <input type="text" id="set-headline" class="form-input" required>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+              <div class="form-group">
+                <label class="form-label" for="set-email">Contact Email Address</label>
+                <input type="email" id="set-email" class="form-input" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="set-phone">Contact Phone Number</label>
+                <input type="tel" id="set-phone" class="form-input" required pattern="[0-9]{10}">
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 16px;">
+              <div class="form-group">
+                <label class="form-label" for="set-hours">Operating Hours</label>
+                <input type="text" id="set-hours" class="form-input" placeholder="09:00 AM - 08:00 PM" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="set-currency">Display Currency</label>
+                <select id="set-currency" class="form-input" required>
+                  <option value="₹">Rupee (₹)</option>
+                  <option value="$">Dollar ($)</option>
+                  <option value="€">Euro (€)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="set-address">Studio Location Address</label>
+              <textarea id="set-address" class="form-input" required></textarea>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; margin-top: 32px; border-top: 1px solid var(--border); padding-top: 24px;">
+              <button type="submit" class="btn btn-primary btn-lg">Save Settings</button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Global Admin Scripts -->
+  <script src="../js/data.js"></script>
+  <script src="../js/storage.js"></script>
+  <script src="../js/app.js"></script>
+  <script src="../js/admin.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.getElementById("settings-form");
+      
+      const inputName = document.getElementById("set-name");
+      const inputHeadline = document.getElementById("set-headline");
+      const inputEmail = document.getElementById("set-email");
+      const inputPhone = document.getElementById("set-phone");
+      const inputHours = document.getElementById("set-hours");
+      const inputCurrency = document.getElementById("set-currency");
+      const inputAddress = document.getElementById("set-address");
+
+      function loadSettings() {
+        const settings = window.getSettings ? window.getSettings() : {};
+        
+        inputName.value = settings.studioName || "";
+        inputHeadline.value = settings.headline || "";
+        inputEmail.value = settings.email || "";
+        inputPhone.value = settings.phone || "";
+        inputHours.value = settings.operatingHours || "";
+        inputCurrency.value = settings.currency || "₹";
+        inputAddress.value = settings.address || "";
+      }
+
+      // Initial load
+      loadSettings();
+
+      // Save form submit
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const updated = {
+          studioName: inputName.value.trim(),
+          headline: inputHeadline.value.trim(),
+          email: inputEmail.value.trim(),
+          phone: inputPhone.value.trim(),
+          operatingHours: inputHours.value.trim(),
+          currency: inputCurrency.value,
+          address: inputAddress.value.trim()
+        };
+
+        window.saveSettings(updated);
+        window.showToast("Studio configurations saved!");
+        
+        // Re-load to ensure values are set
+        loadSettings();
+      });
+
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Services - Aura Studio</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/admin.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <div class="admin-layout">
+    <!-- Dynamic Sidebar -->
+    <div id="admin-sidebar-placeholder"></div>
+
+    <!-- Main Panel -->
+    <main class="admin-main">
+      <!-- Dynamic Header -->
+      <div id="admin-header-placeholder"></div>
+
+      <!-- Page Content -->
+      <div class="admin-content">
+        <div class="admin-page-header">
+          <div>
+            <h1 class="admin-page-title">Manage Services</h1>
+            <p style="color: var(--text-secondary); font-size: 14px;">Define, edit, and organize photoshoot categories displayed on the customer site.</p>
+          </div>
+          <button id="add-service-btn" class="btn btn-primary"><i data-lucide="plus"></i> Add Service</button>
+        </div>
+
+        <!-- Services Grid -->
+        <div class="admin-metrics-grid" id="services-grid-container" style="grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));">
+          <!-- Dynamically filled -->
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Add/Edit Service Modal -->
+  <div id="service-modal" class="modal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(15, 23, 42, 0.4); backdrop-filter: blur(4px); z-index: 99999; align-items: center; justify-content: center;">
+    <div class="card" style="max-width: 460px; width: 90%; padding: 32px; position: relative; animation: scaleUp 0.2s ease forwards;">
+      <button class="close-modal-btn" style="position: absolute; top: 20px; right: 20px; background: none; border: none; cursor: pointer; color: var(--text-secondary);"><i data-lucide="x"></i></button>
+      
+      <h3 style="font-size: 18px; font-weight: 800; color: var(--text-primary); margin-bottom: 24px;" id="modal-title">Add New Service</h3>
+
+      <form id="service-form">
+        <input type="hidden" id="srv-id">
+        
+        <div class="form-group">
+          <label class="form-label" for="srv-name">Service Category Name</label>
+          <input type="text" id="srv-name" class="form-input" placeholder="Newborn Baby Photography" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="srv-price">Starting Price (₹)</label>
+          <input type="number" id="srv-price" class="form-input" placeholder="3500" required min="0">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="srv-duration">Duration Description</label>
+          <input type="text" id="srv-duration" class="form-input" placeholder="2 Hours" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="srv-icon">Lucide Icon Keyword</label>
+          <select id="srv-icon" class="form-input" required>
+            <option value="camera">Camera</option>
+            <option value="video">Video</option>
+            <option value="heart">Heart (Wedding)</option>
+            <option value="package">Package (Product)</option>
+            <option value="smile">Smile (Baby)</option>
+            <option value="calendar">Calendar (Events)</option>
+            <option value="sliders">Sliders (Editing)</option>
+            <option value="images">Images</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="srv-desc">Detailed Description</label>
+          <textarea id="srv-desc" class="form-input" placeholder="Provide details about the camera set, lighting, props and retouch deliveries..." required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="srv-status">Availability Status</label>
+          <select id="srv-status" class="form-input" required>
+            <option value="active" selected>Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 28px;">
+          <button type="button" class="btn btn-outline close-modal-btn">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Service</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Global Admin Scripts -->
+  <script src="../js/data.js"></script>
+  <script src="../js/storage.js"></script>
+  <script src="../js/app.js"></script>
+  <script src="../js/admin.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const container = document.getElementById("services-grid-container");
+      const modal = document.getElementById("service-modal");
+      const form = document.getElementById("service-form");
+      const modalTitle = document.getElementById("modal-title");
+      const addServiceBtn = document.getElementById("add-service-btn");
+      
+      const inputId = document.getElementById("srv-id");
+      const inputName = document.getElementById("srv-name");
+      const inputPrice = document.getElementById("srv-price");
+      const inputDuration = document.getElementById("srv-duration");
+      const inputIcon = document.getElementById("srv-icon");
+      const inputDesc = document.getElementById("srv-desc");
+      const inputStatus = document.getElementById("srv-status");
+
+      function renderServices() {
+        const list = window.getServices ? window.getServices() : [];
+        const searchInput = document.getElementById("global-admin-search");
+        let query = searchInput ? searchInput.value.toLowerCase().trim() : "";
+
+        let filtered = list;
+        if (query) {
+          filtered = list.filter(s => 
+            s.name.toLowerCase().includes(query) ||
+            s.description.toLowerCase().includes(query)
+          );
+        }
+
+        if (filtered.length === 0) {
+          container.innerHTML = `
+            <div style="grid-column: 1/-1; text-align: center; padding: 48px; color: var(--text-secondary);">
+              <p>No services found matching search query.</p>
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = filtered.map(s => `
+          <div class="card" style="display: flex; flex-direction: column; justify-content: space-between; border-top: 4px solid ${s.status === 'active' ? 'var(--primary-green)' : 'var(--danger)'}">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 16px;">
+                <div style="background-color: var(--soft-green); color: var(--primary-green); width: 40px; height: 40px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center;">
+                  <i data-lucide="${s.icon}"></i>
+                </div>
+                <span class="badge ${s.status === 'active' ? 'badge-success' : 'badge-danger'}">${s.status}</span>
+              </div>
+              <h3 style="font-size: 16px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px;">${s.name}</h3>
+              <p style="color: var(--text-secondary); font-size: 13px; line-height: 1.5; margin-bottom: 16px;">${s.description.substring(0, 110)}...</p>
+            </div>
+            
+            <div style="border-top: 1px solid var(--border); padding-top: 16px; margin-top: 16px; display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <span style="font-size: 10px; color: var(--text-secondary); display: block;">Rate Duration</span>
+                <strong style="font-size: 13px; color: var(--text-primary);">${s.duration}</strong>
+              </div>
+              <div>
+                <span style="font-size: 10px; color: var(--text-secondary); display: block;">Starting Price</span>
+                <strong style="font-size: 15px; color: var(--primary-green);">₹${s.price.toLocaleString('en-IN')}</strong>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 8px; margin-top: 20px;">
+              <button class="btn btn-outline btn-sm edit-btn" data-id="${s.id}" style="flex-grow: 1;">Edit Service</button>
+              <button class="btn btn-outline btn-sm delete-btn" data-id="${s.id}" style="color: var(--danger); border-color: rgba(239, 68, 68, 0.2);"><i data-lucide="trash-2" style="width: 14px; height: 14px;"></i></button>
+            </div>
+          </div>
+        `).join("");
+
+        if (window.lucide) window.lucide.createIcons();
+
+        // Bind events
+        container.querySelectorAll(".edit-btn").forEach(btn => {
+          btn.addEventListener("click", () => {
+            const sId = btn.getAttribute("data-id");
+            const s = list.find(item => item.id === sId);
+            if (s) {
+              inputId.value = s.id;
+              inputName.value = s.name;
+              inputPrice.value = s.price;
+              inputDuration.value = s.duration;
+              inputIcon.value = s.icon;
+              inputDesc.value = s.description;
+              inputStatus.value = s.status;
+
+              modalTitle.textContent = "Edit Studio Service";
+              modal.style.display = "flex";
+            }
+          });
+        });
+
+        container.querySelectorAll(".delete-btn").forEach(btn => {
+          btn.addEventListener("click", () => {
+            const sId = btn.getAttribute("data-id");
+            window.createConfirmationModal(
+              "Delete Studio Service?",
+              "Are you sure you want to remove this service from the catalog? Customer booking page selection will be updated.",
+              "Yes, Delete Service",
+              "Keep Service",
+              () => {
+                window.deleteService(sId);
+                window.showToast("Service deleted successfully", "warning");
+                renderServices();
+              }
+            );
+          });
+        });
+      }
+
+      // Initial run
+      renderServices();
+
+      // Live search input changes
+      const searchInput = document.getElementById("global-admin-search");
+      if (searchInput) {
+        searchInput.addEventListener("input", renderServices);
+      }
+
+      // Add service trigger
+      addServiceBtn.addEventListener("click", () => {
+        form.reset();
+        inputId.value = "";
+        modalTitle.textContent = "Add New Service";
+        modal.style.display = "flex";
+      });
+
+      // Close modal actions
+      function closeModal() {
+        modal.style.display = "none";
+      }
+      modal.querySelectorAll(".close-modal-btn").forEach(btn => {
+        btn.addEventListener("click", closeModal);
+      });
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) closeModal();
+      });
+
+      // Submit modal form
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const id = inputId.value;
+        const nameVal = inputName.value.trim();
+        const priceVal = parseInt(inputPrice.value) || 0;
+        const durationVal = inputDuration.value.trim();
+        const iconVal = inputIcon.value;
+        const descVal = inputDesc.value.trim();
+        const statusVal = inputStatus.value;
+
+        const payload = {
+          name: nameVal,
+          price: priceVal,
+          duration: durationVal,
+          icon: iconVal,
+          description: descVal,
+          status: statusVal
+        };
+
+        if (id) {
+          window.updateService(id, payload);
+          window.showToast("Service updated successfully");
+        } else {
+          window.addService(payload);
+          window.showToast("Service added successfully");
+        }
+
+        closeModal();
+        renderServices();
+      });
+
+    });
+  </script>
+</body>
+</html>

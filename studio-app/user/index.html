@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aura Studio - Capture Your Moments. Create Your Memories</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/user.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- Dynamic Navbar -->
+  <div id="navbar-placeholder"></div>
+
+  <!-- Hero Section (Clean Video Banner with End Action Content) -->
+  <header style="height: 520px; position: relative; overflow: hidden; border-bottom: 1px solid var(--border);">
+    
+    <!-- Background Video -->
+    <video id="hero-bg-video" autoplay muted playsinline style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;">
+      <source src="../assets/239444_202608281050.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+
+    <!-- Bottom vignette gradient overlay (Fades in when video ends) -->
+    <div id="hero-ended-overlay" style="position: absolute; bottom: 0; left: 0; right: 0; height: 220px; background: linear-gradient(to top, rgba(15, 23, 42, 0.8) 0%, rgba(15, 23, 42, 0) 100%); z-index: 2; opacity: 0; transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1); pointer-events: none;"></div>
+
+    <!-- Hero Content overlay (Fades in when video ends, using aesthetic Outfit font) -->
+    <div id="hero-ended-content" style="position: absolute; bottom: 48px; left: 48px; right: 48px; z-index: 3; color: white; display: flex; flex-direction: column; gap: 20px; opacity: 0; transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1); pointer-events: none;">
+      <p style="font-family: 'Outfit', sans-serif; font-size: 17px; font-weight: 400; line-height: 1.6; color: rgba(255,255,255,0.95); margin: 0; max-width: 620px; text-shadow: 0 2px 8px rgba(0,0,0,0.5); letter-spacing: 0.2px;">
+        Find the best booking slot for your portrait, product, or wedding shoot inside or outside the studio room with our creative direction.
+      </p>
+      <div style="display: flex; gap: 14px;">
+        <a href="booking.html" class="btn" style="background: var(--primary-blue); color: white; border: none; padding: 10px 24px; border-radius: 99px; font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 13.5px; transition: var(--transition); box-shadow: var(--shadow-md);">Book Now</a>
+        <a href="services.html" class="btn" style="background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255,255,255,0.4); color: white; padding: 10px 24px; border-radius: 99px; font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 13.5px; transition: var(--transition); backdrop-filter: blur(4px);">Explore Services</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Horizontal Booking Tracking Bar -->
+  <section style="background-color: #FFFFFF; border-bottom: 1px solid var(--border); padding: 24px 0;">
+    <div class="container" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 24px;">
+      <div style="display: flex; align-items: center; gap: 16px; min-width: 280px; max-width: 600px;">
+        <div style="background-color: var(--soft-blue); color: var(--primary-blue); padding: 12px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center;">
+          <i data-lucide="search" style="width: 24px; height: 24px;"></i>
+        </div>
+        <div>
+          <h3 style="font-size: 16px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px;">Track My Booking Status</h3>
+          <p style="font-size: 13px; color: var(--text-secondary);">Enter your Booking ID (e.g. BK-1001) to view slots, invoices, or approvals.</p>
+        </div>
+      </div>
+      
+      <form id="tracking-form" style="display: flex; gap: 12px; flex-grow: 1; max-width: 440px; min-width: 280px;">
+        <input type="text" id="track-id-input" class="form-input" placeholder="Enter Booking ID (e.g. BK-1001)" style="font-size: 14px; flex-grow: 1;" required>
+        <button type="submit" class="btn btn-secondary" style="white-space: nowrap; font-size: 14px; padding: 10px 24px;">Check Status</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Solutions Section (Logi Craft 01, 02, 03 solution format) -->
+  <section class="container" style="padding: 80px 24px;">
+    <div class="solution-row">
+      <!-- Left side: Vertical List -->
+      <div class="solution-accordion">
+        
+        <div class="solution-item active" data-index="1">
+          <span class="solution-number">01</span>
+          <div class="solution-text">
+            <h3>In-Studio Shoots</h3>
+            <p>Professional headshots, modeling portfolios, product e-commerce listings, and creative family portraits in our temperature-controlled light setup.</p>
+          </div>
+        </div>
+
+        <div class="solution-item" data-index="2">
+          <span class="solution-number">02</span>
+          <div class="solution-text">
+            <h3>On-Location Shoots</h3>
+            <p>Cinematic wedding coverage, sunrise/sunset outdoor pre-wedding couple sessions, and corporate stage event videography.</p>
+          </div>
+        </div>
+
+        <div class="solution-item" data-index="3">
+          <span class="solution-number">03</span>
+          <div class="solution-text">
+            <h3>Post Production</h3>
+            <p>Premium retouching, skin smoothing, object removals, backdrop replacements, color correction, and promotional video editing.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right side: Solution Promo Card -->
+      <div class="solution-promo">
+        <span style="color: var(--primary-blue); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px;">Solutions Catalog</span>
+        <h2 style="font-size: 32px; font-weight: 800; color: var(--text-primary); margin: 8px 0 20px 0; line-height: 1.2;">
+          Creative Studio Solutions For Business To Solve Any Visual Problems
+        </h2>
+        <p style="color: var(--text-secondary); font-size: 15px; line-height: 1.6; margin-bottom: 32px;">
+          Whether you are launching a premium skincare brand requiring clean macro product shots or coordinating a 3-day wedding event, our team has the camera rigs and creative directors to deliver flawless results.
+        </p>
+        <a href="booking.html" class="btn btn-secondary btn-lg">Book a Session</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Let's See Our Progress Section (Stats and reached metrics map) -->
+  <section style="background-color: white; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 80px 24px;">
+    <div class="container progress-section">
+      <!-- Left side: text info -->
+      <div class="progress-info">
+        <span style="color: var(--primary-green); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px;">Our Traction</span>
+        <h2 style="font-size: 32px; font-weight: 800; color: var(--text-primary); margin: 8px 0 20px 0; line-height: 1.2;">
+          Let's See Our Progress
+        </h2>
+        <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.6; margin-bottom: 32px;">
+          We trace our success through the beautiful memories captured and metrics achieved. From regional corporate shoots to international wedding destinations, look at our footprint.
+        </p>
+        <a href="gallery.html" class="btn btn-primary" style="background-color: var(--primary-green); border-color: var(--primary-green);">Explore Gallery</a>
+      </div>
+
+      <!-- Right side: metrics board counters with map watermark -->
+      <div class="progress-visual" style="background: url('https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=600&q=80') no-repeat center center/cover; background-blend-mode: overlay; background-color: rgba(255,255,255,0.95);">
+        
+        <div class="progress-stat">
+          <h3 style="color: var(--primary-blue);">323K</h3>
+          <p>Photos Acquired</p>
+        </div>
+        
+        <div class="progress-stat">
+          <h3 style="color: var(--primary-green);">210K</h3>
+          <p>Happy Customers</p>
+        </div>
+
+        <div class="progress-stat">
+          <h3 style="color: var(--primary-blue);">1247</h3>
+          <p>Sessions Completed</p>
+        </div>
+
+        <div class="progress-stat">
+          <h3 style="color: var(--primary-green);">64127</h3>
+          <p>Hours Under Lights</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Scrolling Marquee Ribbon (Infinite text loop) -->
+  <div class="marquee-ribbon">
+    <div class="marquee-content">
+      <span>AuraStudio • Photography • Videography • Post-Production • Retouching • Portrait • Wedding • Product • E-commerce • Event Coverage • AuraStudio • Photography • Videography • Post-Production • Retouching • Portrait • Wedding • Product • E-commerce • Event Coverage</span>
+      <span>AuraStudio • Photography • Videography • Post-Production • Retouching • Portrait • Wedding • Product • E-commerce • Event Coverage • AuraStudio • Photography • Videography • Post-Production • Retouching • Portrait • Wedding • Product • E-commerce • Event Coverage</span>
+    </div>
+  </div>
+
+  <!-- How We Work Section (Stepper around DSLR camera graphic) -->
+  <section class="how-we-work-section">
+    <div class="container">
+      <span style="color: var(--primary-green); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px;">Methodology</span>
+      <h2 style="font-size: 32px; font-weight: 800; color: var(--text-primary); margin-top: 8px;">How We Work</h2>
+      <p style="color: var(--text-secondary); max-width: 600px; margin: 8px auto 0 auto; font-size: 15px;">A streamlined 5-step creative pipeline to align on backdrops, capture your angles, and deliver finalized edits.</p>
+
+      <div class="work-stepper-container">
+        <!-- Left Steps -->
+        <div class="work-step-col">
+          <div class="work-step-node">
+            <h4>01. Request Session</h4>
+            <p>Reserve your preferred date, time slot, and inclusions package tier via our booking scheduler.</p>
+          </div>
+          <div class="work-step-node">
+            <h4>02. Theme Alignment</h4>
+            <p>Coordinate styling recommendations, outfit colors, background boards, and lighting setup details.</p>
+          </div>
+        </div>
+
+        <!-- Center Image DSLR Graphic -->
+        <div class="work-center-graphic">
+          <img src="https://images.unsplash.com/photo-1616423643868-888a263229b4?auto=format&fit=crop&w=400&q=80" alt="Studio Camera Frame">
+        </div>
+
+        <!-- Right Steps -->
+        <div class="work-step-col right">
+          <div class="work-step-node">
+            <h4>03. Shoot Execution</h4>
+            <p>Our team directs your posing, backdrops, and captures frames in-studio or on-site.</p>
+          </div>
+          <div class="work-step-node">
+            <h4>04. Gallery Proofing</h4>
+            <p>Access raw image files via a secure online link and mark your favorite items for retouches.</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Stepper Footer 05. Delivery -->
+      <div style="max-width: 400px; margin: 40px auto 0 auto;" class="work-step-node">
+        <h4 style="justify-content: center; color: var(--primary-green); font-weight: 700;">05. High-Res Deliveries</h4>
+        <p style="text-align: center;">Finalized retouched soft copies are delivered via secure cloud link within 5-7 business days.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Download App Promo Card Banner -->
+  <section class="container">
+    <div class="app-promo-container">
+      <div class="app-promo-content">
+        <h2>Download the free Aura Studio App</h2>
+        <p>Book sessions, track schedule approvals, review raw proofing catalogs, and message our photographer crew instantly from your mobile phone.</p>
+        
+        <div class="app-badges">
+          <a href="#" class="app-badge-btn"><img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play Store"></a>
+          <a href="#" class="app-badge-btn"><img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" alt="App Store"></a>
+        </div>
+      </div>
+
+      <!-- Right Mockup Images -->
+      <div class="app-promo-mockup">
+        <!-- Studio transport gear van -->
+        <img src="https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&w=300&q=80" class="van-img" alt="Camera boxes">
+        <!-- Phone UI mockup -->
+        <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=320&q=80" class="phone-img" alt="Phone App Mockup">
+      </div>
+    </div>
+  </section>
+
+  <!-- Latest News / Blogs Section -->
+  <section style="background-color: var(--background); padding: 80px 24px; border-top: 1px solid var(--border);">
+    <div class="container">
+      <div style="text-align: center; margin-bottom: 48px;">
+        <span style="color: var(--primary-blue); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px;">Visual Articles</span>
+        <h2 style="font-size: 32px; font-weight: 800; color: var(--text-primary); margin-top: 8px;">Latest Visual Insights</h2>
+        <p style="color: var(--text-secondary); max-width: 500px; margin: 8px auto 0 auto; font-size: 14px;">Guides, styling advice, and equipment breakdowns to prepare for your studio session.</p>
+      </div>
+
+      <div class="services-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+        
+        <!-- Blog Card 1 -->
+        <div class="card card-hover" style="padding: 0; overflow: hidden; display: flex; flex-direction: column;">
+          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80" alt="Outfit portrait guide" style="width: 100%; height: 200px; object-fit: cover;">
+          <div style="padding: 24px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <span style="font-size: 11px; color: var(--primary-blue); font-weight: 700; text-transform: uppercase;">Outfits & Styling</span>
+              <h3 style="font-size: 16px; font-weight: 700; margin: 8px 0; color: var(--text-primary); line-height: 1.4;">How to Choose Outfits for Headshot Portrait Sessions</h3>
+              <p style="color: var(--text-secondary); font-size: 13px; line-height: 1.5; margin-bottom: 20px;">Avoid heavy patterns. Discover how solid colors and proper necklines frame your face under softbox diffusers.</p>
+            </div>
+            <a href="#" class="btn btn-outline btn-sm" style="align-self: flex-start;">Read Article</a>
+          </div>
+        </div>
+
+        <!-- Blog Card 2 -->
+        <div class="card card-hover" style="padding: 0; overflow: hidden; display: flex; flex-direction: column;">
+          <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80" alt="Wedding timeline" style="width: 100%; height: 200px; object-fit: cover;">
+          <div style="padding: 24px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <span style="font-size: 11px; color: var(--primary-green); font-weight: 700; text-transform: uppercase;">Wedding Coverages</span>
+              <h3 style="font-size: 16px; font-weight: 700; margin: 8px 0; color: var(--text-primary); line-height: 1.4;">Preparing Your Custom Timeline for Outdoor Weddings</h3>
+              <p style="color: var(--text-secondary); font-size: 13px; line-height: 1.5; margin-bottom: 20px;">Capture the golden hour. Optimize your ceremony and cocktail schedules to leverage natural sunlight.</p>
+            </div>
+            <a href="#" class="btn btn-outline btn-sm" style="align-self: flex-start;">Read Article</a>
+          </div>
+        </div>
+
+        <!-- Blog Card 3 -->
+        <div class="card card-hover" style="padding: 0; overflow: hidden; display: flex; flex-direction: column;">
+          <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=600&q=80" alt="Product setups" style="width: 100%; height: 200px; object-fit: cover;">
+          <div style="padding: 24px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <span style="font-size: 11px; color: var(--primary-blue); font-weight: 700; text-transform: uppercase;">Product E-commerce</span>
+              <h3 style="font-size: 16px; font-weight: 700; margin: 8px 0; color: var(--text-primary); line-height: 1.4;">Modern E-Commerce Angles: Optimizing Product Visuals</h3>
+              <p style="color: var(--text-secondary); font-size: 13px; line-height: 1.5; margin-bottom: 20px;">Clean reflections, macro textures, and standard shadow parameters to double click-through rates.</p>
+            </div>
+            <a href="#" class="btn btn-outline btn-sm" style="align-self: flex-start;">Read Article</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section ("Over 1000+ People Trust us") -->
+  <section class="container" style="padding: 80px 24px; text-align: center;">
+    <span style="color: var(--primary-blue); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px;">Testimonials</span>
+    <h2 style="font-size: 32px; font-weight: 800; color: var(--text-primary); margin: 8px 0 48px 0;">Over 1000+ People Trust us</h2>
+
+    <div class="packages-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
+      
+      <!-- Review 1 -->
+      <div class="card" style="text-align: left; padding: 32px; display: flex; flex-direction: column; justify-content: space-between;">
+        <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.6; margin-bottom: 24px; font-style: italic;">
+          "Aura Studio completely changed our brand's e-commerce catalogs. The product images are pristine, the skin retouches are seamless, and the turnaround time was faster than expected."
+        </p>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=100&q=80" alt="Harley Rivera" style="width: 44px; height: 44px; border-radius: 50%; object-fit: cover;">
+          <div>
+            <h4 style="font-size: 14px; font-weight: 700;">Harley Rivera</h4>
+            <span style="font-size: 12px; color: var(--text-secondary);">Senior Art Director, GlowCo</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Review 2 -->
+      <div class="card" style="text-align: left; padding: 32px; display: flex; flex-direction: column; justify-content: space-between; border-color: var(--primary-blue);">
+        <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.6; margin-bottom: 24px; font-style: italic;">
+          "The portrait session was relaxed and professional. The photographers directed my poses and lighting grids perfectly. Our corporate headshots came out looking incredibly premium."
+        </p>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80" alt="Karl Anderson" style="width: 44px; height: 44px; border-radius: 50%; object-fit: cover;">
+          <div>
+            <h4 style="font-size: 14px; font-weight: 700;">Karl Anderson</h4>
+            <span style="font-size: 12px; color: var(--text-secondary);">VP of Growth, Hando Corp</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Review 3 -->
+      <div class="card" style="text-align: left; padding: 32px; display: flex; flex-direction: column; justify-content: space-between;">
+        <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.6; margin-bottom: 24px; font-style: italic;">
+          "They captured our pre-wedding and wedding shoots so beautifully! The videography edits are cinematic and filled with raw emotion. Highly recommend their professional team."
+        </p>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=100&q=80" alt="Courtney Smith" style="width: 44px; height: 44px; border-radius: 50%; object-fit: cover;">
+          <div>
+            <h4 style="font-size: 14px; font-weight: 700;">Courtney Smith</h4>
+            <span style="font-size: 12px; color: var(--text-secondary);">Creative Consultant</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="margin-top: 48px;">
+      <a href="booking.html" class="btn btn-secondary btn-lg">Show All Reviewers</a>
+    </div>
+  </section>
+
+  <!-- Interactive Tracking Modal (Shown when searching Booking ID) -->
+  <div id="tracking-modal" class="modal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(15, 23, 42, 0.4); backdrop-filter: blur(4px); z-index: 99999; align-items: center; justify-content: center;">
+    <div class="card" style="max-width: 440px; width: 90%; padding: 32px; position: relative; animation: scaleUp 0.2s ease forwards;">
+      <button id="close-tracking-modal" style="position: absolute; top: 20px; right: 20px; background: none; border: none; cursor: pointer; color: var(--text-secondary);"><i data-lucide="x"></i></button>
+      
+      <h3 style="font-size: 18px; font-weight: 800; color: var(--text-primary); margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+        <i data-lucide="info" style="color: var(--primary-blue);"></i>
+        <span>Booking Tracking Status</span>
+      </h3>
+
+      <div style="font-size: 14px; display: flex; flex-direction: column; gap: 12px;" id="tracking-result-box">
+        <!-- Dynamic content filled via JS -->
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; margin-top: 24px;">
+        <button class="btn btn-primary" id="tracking-ok-btn">Close Status</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dynamic Footer -->
+  <div id="footer-placeholder"></div>
+
+  <!-- Global scripts -->
+  <script src="../js/data.js"></script>
+  <script src="../js/storage.js"></script>
+  <script src="../js/app.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // 1. Solution Accordion Interactions (01, 02, 03 details toggle)
+      const solutionItems = document.querySelectorAll(".solution-item");
+      solutionItems.forEach(item => {
+        item.addEventListener("click", () => {
+          solutionItems.forEach(el => el.classList.remove("active"));
+          item.classList.add("active");
+        });
+      });
+
+      // 2. Tracking Form Status Lookups (Client-Side dynamic lookup)
+      const trackingForm = document.getElementById("tracking-form");
+      const trackingModal = document.getElementById("tracking-modal");
+      const closeTrackingBtn = document.getElementById("close-tracking-modal");
+      const okTrackingBtn = document.getElementById("tracking-ok-btn");
+      const trackingResultBox = document.getElementById("tracking-result-box");
+
+      trackingForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const bId = document.getElementById("track-id-input").value.trim().toLowerCase();
+        
+        // Fetch all bookings from localStorage
+        const bookingsList = window.getBookings ? window.getBookings() : [];
+        const found = bookingsList.find(b => b.id.toLowerCase() === bId || b.id.toLowerCase() === `bk-${bId}`);
+
+        if (found) {
+          let statusBadgeClass = "badge-info";
+          if (found.status === "Confirmed" || found.status === "Completed") statusBadgeClass = "badge-success";
+          if (found.status === "Cancelled") statusBadgeClass = "badge-danger";
+          if (found.status === "Pending") statusBadgeClass = "badge-warning";
+
+          trackingResultBox.innerHTML = `
+            <p><strong>Booking ID:</strong> #${found.id}</p>
+            <p><strong>Client Name:</strong> ${found.customerName}</p>
+            <p><strong> photoshoot Service:</strong> ${found.serviceName}</p>
+            <p><strong>Package Tier:</strong> ${found.packageName}</p>
+            <p><strong>Scheduled Slot:</strong> ${found.date} at ${found.time}</p>
+            <p><strong>Grand Total:</strong> ₹${found.amount.toLocaleString('en-IN')}</p>
+            <p><strong>Approval Status:</strong> <span class="badge ${statusBadgeClass}">${found.status}</span></p>
+          `;
+        } else {
+          trackingResultBox.innerHTML = `
+            <div style="text-align: center; color: var(--danger); padding: 12px 0;">
+              <i data-lucide="alert-circle" style="width: 40px; height: 40px; margin-bottom: 8px;"></i>
+              <p><strong>Booking ID Not Found</strong></p>
+              <p style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">We couldn't locate any records matching "${bId.toUpperCase()}". Check your ID and try again.</p>
+            </div>
+          `;
+        }
+
+        trackingModal.style.display = "flex";
+        if (window.lucide) window.lucide.createIcons();
+      });
+
+      // Close modal functions
+      function closeTrackingModal() {
+        trackingModal.style.display = "none";
+      }
+      closeTrackingBtn.addEventListener("click", closeTrackingModal);
+      okTrackingBtn.addEventListener("click", closeTrackingModal);
+      trackingModal.addEventListener("click", (e) => {
+        if (e.target === trackingModal) closeTrackingModal();
+      });
+
+      // 3. Background Video Ended Listener (Fades in description & buttons at the bottom)
+      const heroVideo = document.getElementById("hero-bg-video");
+      const endedOverlay = document.getElementById("hero-ended-overlay");
+      const endedContent = document.getElementById("hero-ended-content");
+
+      if (heroVideo && endedContent && endedOverlay) {
+        heroVideo.addEventListener("ended", () => {
+          endedOverlay.style.opacity = "1";
+          endedContent.style.opacity = "1";
+          endedContent.style.pointerEvents = "auto";
+        });
+      }
+
+      if (window.lucide) window.lucide.createIcons();
+    });
+  </script>
+</body>
+</html>

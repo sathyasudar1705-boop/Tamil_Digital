@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book a Session - Aura Studio</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/user.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- Dynamic Navbar -->
+  <div id="navbar-placeholder"></div>
+
+  <!-- Header Banner -->
+  <header style="background: linear-gradient(135deg, var(--soft-green) 0%, var(--soft-blue) 100%); padding: 48px 24px; text-align: center; border-bottom: 1px solid var(--border);">
+    <div style="max-width: 800px; margin: 0 auto;">
+      <h1 style="font-size: 32px; font-weight: 800; color: var(--text-primary); margin-bottom: 8px;">Book Your Shoot</h1>
+      <p style="color: var(--text-secondary); font-size: 14px;">Select your photoshoot specifications, schedule a date, and confirm your booking instantly.</p>
+    </div>
+  </header>
+
+  <!-- Split Grid Container -->
+  <main class="booking-container">
+    
+    <!-- Left: Booking Form -->
+    <div class="card" style="padding: 40px; box-shadow: var(--shadow-sm);">
+      <h2 style="font-size: 20px; font-weight: 700; color: var(--text-primary); margin-bottom: 24px; display: flex; align-items: center; gap: 8px;">
+        <i data-lucide="calendar" style="color: var(--primary-green);"></i>
+        <span>Session Specifications</span>
+      </h2>
+
+      <form id="booking-form">
+        <!-- Customer details (Pre-filled from auth session) -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px;">
+          <div class="form-group">
+            <label class="form-label" for="b-name">Customer Name</label>
+            <input type="text" id="b-name" class="form-input" readonly style="background-color: var(--background); cursor: not-allowed;">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="b-email">Email Address</label>
+            <input type="email" id="b-email" class="form-input" readonly style="background-color: var(--background); cursor: not-allowed;">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="b-phone">Phone Number</label>
+          <input type="text" id="b-phone" class="form-input" readonly style="background-color: var(--background); cursor: not-allowed;">
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid var(--border); margin: 24px 0;">
+
+        <!-- Shoot parameters -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div class="form-group">
+            <label class="form-label" for="b-service">Select Service</label>
+            <select id="b-service" class="form-input" required>
+              <!-- Populated dynamically -->
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="b-package">Select Package</label>
+            <select id="b-package" class="form-input" required>
+              <!-- Populated dynamically -->
+            </select>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 16px;">
+          <div class="form-group">
+            <label class="form-label" for="b-date">Preferred Date</label>
+            <input type="date" id="b-date" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="b-time">Preferred Time</label>
+            <select id="b-time" class="form-input" required>
+              <option value="09:00">09:00 AM</option>
+              <option value="10:30">10:30 AM</option>
+              <option value="12:00">12:00 PM</option>
+              <option value="13:30">01:30 PM</option>
+              <option value="15:00">03:00 PM</option>
+              <option value="16:30">04:30 PM</option>
+              <option value="18:00">06:00 PM</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="b-people">Number of People</label>
+          <input type="number" id="b-people" class="form-input" min="1" max="100" value="1" required>
+          <span style="font-size: 11px; color: var(--text-secondary); margin-top: 4px; display: block;">* Groups greater than 1 incur a ₹200 surcharge per additional person.</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="b-requirements">Additional Requirements</label>
+          <textarea id="b-requirements" class="form-input" placeholder="Backdrop preferences, specific lighting requests, styling choices..."></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg" style="width: 100%; margin-top: 16px;">Confirm Booking</button>
+      </form>
+    </div>
+
+    <!-- Right: Booking Summary Invoice -->
+    <div class="booking-summary-sidebar">
+      <div class="card" style="box-shadow: var(--shadow-md); padding: 32px; border-top: 4px solid var(--primary-green);">
+        <h3 style="font-size: 18px; font-weight: 700; color: var(--text-primary); margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 12px;">Booking Summary</h3>
+        
+        <div style="display: flex; flex-direction: column; gap: 16px; font-size: 14px; color: var(--text-secondary);">
+          <div style="display: flex; justify-content: space-between;">
+            <span>Selected Service:</span>
+            <strong id="invoice-service" style="color: var(--text-primary);">Portrait Photography</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between;">
+            <span>Base Service Rate:</span>
+            <strong id="invoice-service-cost" style="color: var(--text-primary);">₹0</strong>
+          </div>
+          
+          <div style="display: flex; justify-content: space-between;">
+            <span>Selected Package:</span>
+            <strong id="invoice-package" style="color: var(--text-primary);">Basic</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between;">
+            <span>Base Package Rate:</span>
+            <strong id="invoice-package-cost" style="color: var(--text-primary);">₹0</strong>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border); padding-bottom: 16px;">
+            <span>Additional Surcharges:</span>
+            <strong id="invoice-surcharge" style="color: var(--text-primary);">₹0</strong>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: baseline; padding-top: 8px;">
+            <span style="font-size: 16px; font-weight: 700; color: var(--text-primary);">Estimated Total:</span>
+            <span style="font-size: 26px; font-weight: 800; color: var(--primary-green);" id="invoice-total">₹0</span>
+          </div>
+        </div>
+
+        <div style="background-color: var(--soft-green); border-radius: var(--radius-sm); padding: 14px; margin-top: 24px; font-size: 12px; display: flex; gap: 8px; color: var(--success);">
+          <i data-lucide="shield-check" style="flex-shrink: 0; width: 16px; height: 16px;"></i>
+          <span>Secure checkout. Pay at the studio or via portal post confirmation.</span>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Booking Success Modal -->
+  <div id="booking-success-modal" class="modal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(15, 23, 42, 0.4); backdrop-filter: blur(4px); z-index: 99999; align-items: center; justify-content: center;">
+    <div class="card" style="max-width: 440px; width: 90%; text-align: center; padding: 40px; animation: scaleUp 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;">
+      <div style="width: 64px; height: 64px; background-color: var(--soft-green); color: var(--primary-green); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px auto;">
+        <i data-lucide="check" style="width: 32px; height: 32px;"></i>
+      </div>
+      
+      <h3 style="font-size: 22px; font-weight: 800; color: var(--text-primary); margin-bottom: 8px;">Booking Confirmed!</h3>
+      <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.6; margin-bottom: 24px;">
+        Your photoshoot has been scheduled. Your Booking ID is <strong id="success-booking-id" style="color: var(--text-primary);">BK-XXXX</strong>.
+      </p>
+
+      <div style="background-color: var(--background); border-radius: var(--radius-sm); padding: 16px; margin-bottom: 32px; text-align: left; font-size: 13px;">
+        <p style="margin-bottom: 6px;"><i data-lucide="camera" style="width: 14px; height: 14px; display: inline-block; vertical-align: middle; margin-right: 6px; color: var(--primary-green);"></i> <span id="success-service-name">Service</span></p>
+        <p style="margin-bottom: 6px;"><i data-lucide="calendar" style="width: 14px; height: 14px; display: inline-block; vertical-align: middle; margin-right: 6px; color: var(--primary-green);"></i> <span id="success-date">Date</span> at <span id="success-time">Time</span></p>
+        <p><i data-lucide="credit-card" style="width: 14px; height: 14px; display: inline-block; vertical-align: middle; margin-right: 6px; color: var(--primary-green);"></i> Total: <strong id="success-price">₹0</strong></p>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <a href="dashboard.html" class="btn btn-primary" style="width: 100%;">Go to Dashboard</a>
+        <a href="index.html" class="btn btn-outline" style="width: 100%;">Return Home</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dynamic Footer -->
+  <div id="footer-placeholder"></div>
+
+  <!-- Global scripts -->
+  <script src="../js/data.js"></script>
+  <script src="../js/storage.js"></script>
+  <script src="../js/app.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // 1. Guard route: customer must be authenticated
+      window.requireCustomerAuth();
+
+      const user = window.getLoggedInUser();
+      const services = window.getServices ? window.getServices() : [];
+      const packages = window.getPackages ? window.getPackages() : [];
+
+      // Pre-fill user data
+      if (user) {
+        document.getElementById("b-name").value = user.name;
+        document.getElementById("b-email").value = user.email;
+        document.getElementById("b-phone").value = user.phone;
+      }
+
+      // Populate dropdowns
+      const serviceSelect = document.getElementById("b-service");
+      const packageSelect = document.getElementById("b-package");
+
+      const activeServices = services.filter(s => s.status === "active");
+      const activePackages = packages.filter(p => p.status === "active");
+
+      serviceSelect.innerHTML = activeServices.map(s => `
+        <option value="${s.id}" data-price="${s.price}">${s.name}</option>
+      `).join("");
+
+      packageSelect.innerHTML = activePackages.map(p => `
+        <option value="${p.id}" data-price="${p.price}">${p.name} Package (₹${p.price})</option>
+      `).join("");
+
+      // Read URL Search Parameters for pre-selection
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlService = urlParams.get("service");
+      const urlPackage = urlParams.get("package");
+      const urlDate = urlParams.get("date");
+
+      if (urlService && serviceSelect.querySelector(`option[value="${urlService}"]`)) {
+        serviceSelect.value = urlService;
+      }
+      if (urlPackage && packageSelect.querySelector(`option[value="${urlPackage}"]`)) {
+        packageSelect.value = urlPackage;
+      }
+      
+      // Date constraints
+      const dateInput = document.getElementById("b-date");
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      const tomorrowStr = tomorrow.toISOString().split('T')[0];
+      dateInput.min = tomorrowStr;
+      dateInput.value = urlDate || tomorrowStr;
+
+      // Invoice updating logic
+      const invoiceService = document.getElementById("invoice-service");
+      const invoiceServiceCost = document.getElementById("invoice-service-cost");
+      const invoicePackage = document.getElementById("invoice-package");
+      const invoicePackageCost = document.getElementById("invoice-package-cost");
+      const invoiceSurcharge = document.getElementById("invoice-surcharge");
+      const invoiceTotal = document.getElementById("invoice-total");
+
+      function updateInvoice() {
+        const selectedServiceOpt = serviceSelect.options[serviceSelect.selectedIndex];
+        const selectedPackageOpt = packageSelect.options[packageSelect.selectedIndex];
+        const peopleCount = parseInt(document.getElementById("b-people").value) || 1;
+
+        if (!selectedServiceOpt || !selectedPackageOpt) return;
+
+        const sName = selectedServiceOpt.text;
+        const sCost = parseInt(selectedServiceOpt.getAttribute("data-price"));
+
+        const pName = selectedPackageOpt.text.split(' Package')[0];
+        const pCost = parseInt(selectedPackageOpt.getAttribute("data-price"));
+
+        // Calculate surcharge: group sizes > 1 add 200 per extra person
+        const surcharge = peopleCount > 1 ? (peopleCount - 1) * 200 : 0;
+        const grandTotal = sCost + pCost + surcharge;
+
+        // Render invoice panel values
+        invoiceService.textContent = sName;
+        invoiceServiceCost.textContent = `₹${sCost.toLocaleString('en-IN')}`;
+        invoicePackage.textContent = pName;
+        invoicePackageCost.textContent = `₹${pCost.toLocaleString('en-IN')}`;
+        invoiceSurcharge.textContent = `₹${surcharge.toLocaleString('en-IN')}`;
+        invoiceTotal.textContent = `₹${grandTotal.toLocaleString('en-IN')}`;
+      }
+
+      // Attach event listeners
+      serviceSelect.addEventListener("change", updateInvoice);
+      packageSelect.addEventListener("change", updateInvoice);
+      document.getElementById("b-people").addEventListener("input", updateInvoice);
+
+      // Perform initial calculation
+      updateInvoice();
+
+      // Submit Form
+      const form = document.getElementById("booking-form");
+      const successModal = document.getElementById("booking-success-modal");
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const selectedServiceOpt = serviceSelect.options[serviceSelect.selectedIndex];
+        const selectedPackageOpt = packageSelect.options[packageSelect.selectedIndex];
+        const dateVal = dateInput.value;
+        const timeVal = document.getElementById("b-time").value;
+        const peopleVal = parseInt(document.getElementById("b-people").value) || 1;
+        const reqsVal = document.getElementById("b-requirements").value.trim();
+
+        const sCost = parseInt(selectedServiceOpt.getAttribute("data-price"));
+        const pCost = parseInt(selectedPackageOpt.getAttribute("data-price"));
+        const surcharge = peopleVal > 1 ? (peopleVal - 1) * 200 : 0;
+        const totalCost = sCost + pCost + surcharge;
+
+        const newBooking = {
+          customerId: user.id || "cust-temp",
+          customerName: user.name,
+          customerEmail: user.email,
+          customerPhone: user.phone,
+          serviceId: serviceSelect.value,
+          serviceName: selectedServiceOpt.text,
+          packageId: packageSelect.value,
+          packageName: selectedPackageOpt.text.split(' Package')[0],
+          date: dateVal,
+          time: timeVal,
+          peopleCount: peopleVal,
+          requirements: reqsVal,
+          amount: totalCost,
+          status: "Pending" // Customer bookings are default "Pending" until approved by Admin
+        };
+
+        const confirmedBooking = window.addBooking(newBooking);
+        
+        // Show Success Modal
+        document.getElementById("success-booking-id").textContent = confirmedBooking.id;
+        document.getElementById("success-service-name").textContent = confirmedBooking.serviceName + " (" + confirmedBooking.packageName + ")";
+        document.getElementById("success-date").textContent = confirmedBooking.date;
+        document.getElementById("success-time").textContent = timeVal;
+        document.getElementById("success-price").textContent = `₹${confirmedBooking.amount.toLocaleString('en-IN')}`;
+
+        successModal.style.display = "flex";
+        if (window.lucide) window.lucide.createIcons();
+      });
+
+    });
+  </script>
+</body>
+</html>
