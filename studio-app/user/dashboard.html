@@ -3,149 +3,270 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Customer Dashboard - Aura Studio</title>
+  <title>User Dashboard - Aura Studio</title>
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/user.css">
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body>
+<body style="background: var(--bg-light, #F8FAFC); margin: 0; min-height: 100vh; display: flex; flex-direction: column;">
 
   <!-- Dynamic Navbar -->
   <div id="navbar-placeholder"></div>
 
-  <!-- Dashboard Container Grid -->
-  <main class="dashboard-grid">
+  <!-- Scrollable Dashboard Content -->
+  <main style="max-width: 1240px; margin: 0 auto; padding: 32px 24px; flex: 1; width: 100%; box-sizing: border-box;">
     
-    <!-- Left Sidebar -->
-    <aside style="background: white; border: 1px solid var(--border); padding: 24px; border-radius: var(--radius-lg); height: fit-content; box-shadow: var(--shadow-sm);">
-      <div style="text-align: center; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--border);">
-        <img id="user-avatar" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80" alt="Profile" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid var(--light-green); margin-bottom: 12px;">
-        <h4 id="user-name" style="font-weight: 700; font-size: 16px; color: var(--text-primary);">Customer Name</h4>
-        <span class="badge badge-success" style="font-size: 11px;">Preferred Member</span>
-      </div>
+    <!-- 2-Column Dashboard Grid: Main Content + Right Widgets Rail -->
+    <div class="app-content-layout">
+          
+          <!-- Left Column: Featured Services & Stats & Bookings -->
+          <div class="app-dashboard-main">
 
-      <div class="dashboard-sidebar-menu">
-        <a href="dashboard.html" class="dashboard-sidebar-item active">
-          <i data-lucide="layout-dashboard"></i> <span>Dashboard Overview</span>
-        </a>
-        <a href="bookings.html" class="dashboard-sidebar-item">
-          <i data-lucide="calendar"></i> <span>My Bookings</span>
-        </a>
-        <a href="profile.html" class="dashboard-sidebar-item">
-          <i data-lucide="user"></i> <span>My Profile</span>
-        </a>
-        <a href="#" id="sidebar-logout" class="dashboard-sidebar-item" style="color: var(--danger);">
-          <i data-lucide="log-out"></i> <span>Logout</span>
-        </a>
-      </div>
-    </aside>
+            <!-- Top Hero Banner: Curved Dark Header -->
+            <section class="app-hero-banner" style="display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 14px 22px; overflow: visible;">
+              <div class="app-hero-banner-content" style="max-width: 540px;">
+                <span class="app-hero-banner-tag" style="font-size: 9.5px; padding: 2px 8px; margin-bottom: 4px;"><i data-lucide="sparkles" style="width: 12px; height: 12px; margin-right: 4px; display: inline-block; vertical-align: middle;"></i> Premium Studio Experience</span>
+                <h1 class="app-hero-banner-title" style="font-size: 16px; margin-bottom: 4px; line-height: 1.25;">Capture Extraordinary Moments with Aura</h1>
+                <p class="app-hero-banner-desc" style="font-size: 11.5px; margin-bottom: 10px; line-height: 1.35;">Book high-definition studio sessions, portrait shoots, or wedding coverage with our elite creative direction team.</p>
+                <div class="app-hero-banner-actions">
+                  <a href="booking.html" class="app-hero-btn primary" style="padding: 5px 14px; font-size: 11.5px;">
+                    <i data-lucide="calendar" style="width: 13px; height: 13px;"></i> Book New Shoot
+                  </a>
+                  <a href="gallery.html" class="app-hero-btn secondary" style="padding: 5px 14px; font-size: 11.5px;">
+                    <i data-lucide="image" style="width: 13px; height: 13px;"></i> Explore Gallery
+                  </a>
+                </div>
+              </div>
+              <div class="app-hero-banner-image" style="flex-shrink: 0; display: flex; align-items: center; justify-content: center; margin-top: -15px; margin-bottom: -15px; margin-right: -5px;">
+                <img src="../assets/hero_illustration.png" alt="Photography Experience" style="width: 185px; height: 185px; object-fit: contain; filter: drop-shadow(0 4px 14px rgba(0,0,0,0.3)); display: block;">
+              </div>
+            </section>
 
-    <!-- Right Dashboard Content -->
-    <section>
-      <div style="margin-bottom: 32px;">
-        <h1 style="font-size: 28px; font-weight: 800; color: var(--text-primary); margin-bottom: 4px;" id="welcome-message">Hello, Customer!</h1>
-        <p style="color: var(--text-secondary); font-size: 14px;">Here is an overview of your photo sessions and rewards.</p>
-      </div>
+            <!-- Category Pills Filter Bar -->
+            <div class="app-category-pills" id="dashboard-category-pills">
+              <div class="app-cat-pill active" data-category="all">
+                <i data-lucide="sparkles" style="width: 14px; height: 14px;"></i> All Services
+              </div>
+              <div class="app-cat-pill" data-category="Portrait">
+                <img src="https://img.icons8.com/external-xnimrodx-lineal-color-xnimrodx/64/external-portrait-art-and-design-studio-xnimrodx-lineal-color-xnimrodx.png" alt="Portrait" style="width: 15px; height: 15px; object-fit: contain;"> Portrait Shoot
+              </div>
+              <div class="app-cat-pill" data-category="Wedding">
+                <i data-lucide="heart" style="width: 14px; height: 14px;"></i> Wedding & Event
+              </div>
+              <div class="app-cat-pill" data-category="Product">
+                <i data-lucide="package" style="width: 14px; height: 14px;"></i> Product E-Commerce
+              </div>
+              <div class="app-cat-pill" data-category="Fashion">
+                <i data-lucide="sun" style="width: 14px; height: 14px;"></i> Outdoor & Fashion
+              </div>
+            </div>
 
-      <!-- Stats Cards -->
-      <div class="dashboard-stats-row">
-        <div class="card" style="padding: 20px; border-left: 4px solid var(--primary-blue);">
-          <p style="color: var(--text-secondary); font-size: 13px; font-weight: 600;">Upcoming Sessions</p>
-          <h3 id="stat-upcoming" style="font-size: 28px; font-weight: 800; margin-top: 4px; color: var(--text-primary);">0</h3>
+            <!-- Stats Row Cards -->
+            <div class="app-stats-row">
+              <div class="app-stat-card">
+                <div class="app-stat-icon" style="background: rgba(16, 185, 129, 0.08); border-radius: 12px; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px;">
+                  <img src="https://img.icons8.com/color/48/tomorrow.png" alt="Upcoming Shoots" style="width: 32px; height: 32px; object-fit: contain;">
+                </div>
+                <div>
+                  <span class="app-stat-label">Upcoming Shoots</span>
+                  <div class="app-stat-value" id="stat-upcoming">0</div>
+                </div>
+              </div>
+
+              <div class="app-stat-card">
+                <div class="app-stat-icon" style="background: rgba(59, 130, 246, 0.08); border-radius: 12px; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px;">
+                  <img src="https://img.icons8.com/parakeet/48/task-completed.png" alt="Completed Shoots" style="width: 32px; height: 32px; object-fit: contain;">
+                </div>
+                <div>
+                  <span class="app-stat-label">Completed Shoots</span>
+                  <div class="app-stat-value" id="stat-completed">0</div>
+                </div>
+              </div>
+
+              <div class="app-stat-card">
+                <div class="app-stat-icon" style="background: rgba(168, 85, 247, 0.1); color: #A855F7;">
+                  <i data-lucide="award" style="width: 20px; height: 20px;"></i>
+                </div>
+                <div>
+                  <span class="app-stat-label">Reward Points</span>
+                  <div class="app-stat-value" id="stat-points">0</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Featured Studio Services Grid -->
+            <div style="margin-bottom: 24px;">
+              <div class="app-section-header">
+                <h3>Recommended Studio Packages</h3>
+                <a href="services.html">View All &rarr;</a>
+              </div>
+
+              <div class="app-cards-grid" id="featured-services-grid">
+                <!-- Populated via JS dynamically -->
+              </div>
+            </div>
+
+            <!-- My Recent Bookings Section -->
+            <div style="background: white; border-radius: 16px; padding: 20px; border: 1px solid #E2E8F0; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
+              <div class="app-section-header">
+                <h3>Recent Studio Bookings</h3>
+                <a href="bookings.html" class="btn btn-outline btn-sm" style="border-radius: 99px; font-size: 11px;">View All</a>
+              </div>
+
+              <div class="table-container">
+                <table class="custom-table" style="font-size: 12.5px;">
+                  <thead>
+                    <tr>
+                      <th>Booking ID</th>
+                      <th>Service Name</th>
+                      <th>Schedule Date</th>
+                      <th>Slot Time</th>
+                      <th>Amount</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="recent-bookings-tbody">
+                    <!-- Populated via JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Right Column: Sidebar Widgets (Live Session Progress, Whats New, Featured Banner) -->
+          <div class="app-side-panel">
+
+            <!-- Live Session Tracker Card -->
+            <div class="app-tracker-card">
+              <div class="app-tracker-header">
+                <span class="app-tracker-badge">Active Session</span>
+                <span style="font-size: 11px; color: #94A3B8;" id="tracker-booking-id">ID #B-101</span>
+              </div>
+              <h4 class="app-tracker-title" id="tracker-service-title">Portrait Masterclass Shoot</h4>
+              
+              <div class="app-tracker-progress-info">
+                <span>Production Progress</span>
+                <span style="color: #10B981; font-weight: 700;" id="tracker-percent">75%</span>
+              </div>
+              <div class="app-tracker-progress-bar">
+                <div class="app-tracker-progress-fill" id="tracker-fill" style="width: 75%;"></div>
+              </div>
+
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px; font-size: 11px; color: #64748B;">
+                <span><i data-lucide="clock" style="width: 13px; height: 13px; display: inline; vertical-align: middle;"></i> Delivery in 2 days</span>
+                <a href="bookings.html" style="color: #3B82F6; font-weight: 600; text-decoration: none;">Track Details</a>
+              </div>
+            </div>
+
+            <!-- "What's New" Updates List -->
+            <div class="app-whats-new-card">
+              <div class="app-whats-new-title">
+                <span>What's New in Tamil Digital</span>
+                <i data-lucide="sparkles" style="width: 15px; height: 15px; color: #F59E0B;"></i>
+              </div>
+              <ul class="app-whats-new-list">
+                <li class="app-whats-new-item">
+                  <div class="app-whats-new-icon" style="background: rgba(59, 130, 246, 0.1); color: #3B82F6;">
+                    <i data-lucide="camera" style="width: 16px; height: 16px;"></i>
+                  </div>
+                  <div class="app-whats-new-content">
+                    <h5>New 4K Cinematic Lens Gear</h5>
+                    <p>Experience ultra-sharp portrait lighting with Sony Master lenses.</p>
+                  </div>
+                </li>
+                <li class="app-whats-new-item">
+                  <div class="app-whats-new-icon" style="background: rgba(16, 185, 129, 0.1); color: #10B981;">
+                    <i data-lucide="gift" style="width: 16px; height: 16px;"></i>
+                  </div>
+                  <div class="app-whats-new-content">
+                    <h5>Festive Season Promo</h5>
+                    <p>Get 20% off on all pre-wedding and event album packages.</p>
+                  </div>
+                </li>
+                <li class="app-whats-new-item">
+                  <div class="app-whats-new-icon" style="background: rgba(245, 158, 11, 0.1); color: #F59E0B;">
+                    <i data-lucide="sun" style="width: 16px; height: 16px;"></i>
+                  </div>
+                  <div class="app-whats-new-content">
+                    <h5>Outdoor Garden Studio Open</h5>
+                    <p>Natural daylight backdrop for serene bridal & fashion shoots.</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Floating Featured Preview Card Widget -->
+            <div class="app-preview-card" style="position: relative; overflow: hidden; background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%); border: 1px solid rgba(255,255,255,0.1);">
+              <div style="position: relative; border-radius: 12px; overflow: hidden; margin-bottom: 14px; background: #000; box-shadow: 0 4px 14px rgba(0,0,0,0.3);">
+                <video src="../assets/Commercial_video_for_photography…_20260911152922.mp4" autoplay loop muted playsinline style="width: 100%; height: 165px; object-fit: cover; display: block; border-radius: 12px;"></video>
+                <span class="app-preview-tag" style="position: absolute; top: 10px; left: 10px; margin-bottom: 0; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px); color: #60A5FA; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 2px 6px rgba(0,0,0,0.3);">Tamil Digital Showcase</span>
+              </div>
+              <h4 style="font-size: 15px; font-weight: 800; color: white; margin-bottom: 6px; letter-spacing: -0.2px;">Tamil Digital Commercial Film</h4>
+              <p style="font-size: 11.5px; color: rgba(255,255,255,0.75); margin-bottom: 14px; line-height: 1.45;">Full 4K highlights, aerial drone shots, studio photography & luxury printed photo albums by Tamil Digital.</p>
+              <a href="booking.html" class="app-hero-btn primary" style="width: 100%; justify-content: center; font-size: 11.5px; padding: 9px 14px; border-radius: 10px; font-weight: 700;">
+                Book Tamil Digital Shoot
+              </a>
+            </div>
+
+          </div>
+
         </div>
-        
-        <div class="card" style="padding: 20px; border-left: 4px solid var(--primary-green);">
-          <p style="color: var(--text-secondary); font-size: 13px; font-weight: 600;">Completed Sessions</p>
-          <h3 id="stat-completed" style="font-size: 28px; font-weight: 800; margin-top: 4px; color: var(--text-primary);">0</h3>
-        </div>
-
-        <div class="card" style="padding: 20px; border-left: 4px solid var(--primary-green);">
-          <p style="color: var(--text-secondary); font-size: 13px; font-weight: 600;">Total Spent</p>
-          <h3 id="stat-spent" style="font-size: 28px; font-weight: 800; margin-top: 4px; color: var(--text-primary);">₹0</h3>
-        </div>
-
-        <div class="card" style="padding: 20px; border-left: 4px solid var(--warning);">
-          <p style="color: var(--text-secondary); font-size: 13px; font-weight: 600;">Reward Points</p>
-          <h3 id="stat-points" style="font-size: 28px; font-weight: 800; margin-top: 4px; color: var(--text-primary);">0</h3>
-        </div>
-      </div>
-
-      <!-- Recent Booking Table card -->
-      <div class="card" style="padding: 32px; box-shadow: var(--shadow-sm);">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-          <h3 style="font-size: 18px; font-weight: 700; color: var(--text-primary);">Recent Bookings</h3>
-          <a href="bookings.html" class="btn btn-outline btn-sm">View All Bookings</a>
-        </div>
-
-        <div class="table-container">
-          <table class="custom-table">
-            <thead>
-              <tr>
-                <th>Booking ID</th>
-                <th>Service Name</th>
-                <th>Schedule Date</th>
-                <th>Time Slot</th>
-                <th>Amount</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody id="recent-bookings-tbody">
-              <!-- Filled via JS -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
 
   </main>
 
-  <!-- Dynamic Footer -->
+  <!-- Footer -->
   <div id="footer-placeholder"></div>
 
   <!-- Global scripts -->
   <script src="../js/data.js"></script>
   <script src="../js/storage.js"></script>
   <script src="../js/app.js"></script>
+  <script src="../js/user.js"></script>
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      // Guard route
+    function initDashboardPage() {
+      // Auth Guard
       window.requireCustomerAuth();
 
-      const user = window.getLoggedInUser();
+      const user = window.getLoggedInUser ? window.getLoggedInUser() : null;
       const bookings = window.getBookings ? window.getBookings() : [];
+      const services = window.getServices ? window.getServices() : [];
 
       if (user) {
-        // Pre-fill profile info
-        document.getElementById("user-name").textContent = user.name;
-        document.getElementById("user-avatar").setAttribute("src", user.avatar || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80");
-        document.getElementById("welcome-message").textContent = `Welcome, ${user.name}!`;
-
-        // Calculate statistics based on this user's bookings
-        const userBookings = bookings.filter(b => b.customerEmail.toLowerCase() === user.email.toLowerCase());
+        // Calculate statistics
+        const userBookings = bookings.filter(b => b.customerEmail && b.customerEmail.toLowerCase() === user.email.toLowerCase());
         
         const upcomingCount = userBookings.filter(b => b.status === "Confirmed" || b.status === "Pending").length;
         const completedCount = userBookings.filter(b => b.status === "Completed").length;
         const totalSpentVal = userBookings
           .filter(b => b.status !== "Cancelled")
-          .reduce((sum, b) => sum + b.amount, 0);
+          .reduce((sum, b) => sum + (b.amount || 0), 0);
         
-        // Reward points (10% of total spent)
         const rewardPointsVal = Math.floor(totalSpentVal / 10);
 
         document.getElementById("stat-upcoming").textContent = upcomingCount;
         document.getElementById("stat-completed").textContent = completedCount;
-        document.getElementById("stat-spent").textContent = `₹${totalSpentVal.toLocaleString('en-IN')}`;
         document.getElementById("stat-points").textContent = rewardPointsVal;
 
-        // Render recent bookings (max 4)
+        // Active Session Tracker update
+        if (userBookings.length > 0) {
+          const latest = userBookings[0];
+          document.getElementById("tracker-booking-id").textContent = `ID #${latest.id}`;
+          document.getElementById("tracker-service-title").textContent = latest.serviceName || "Studio Shoot";
+          const statusVal = latest.status === "Completed" ? 100 : (latest.status === "Confirmed" ? 75 : 30);
+          document.getElementById("tracker-percent").textContent = `${statusVal}%`;
+          document.getElementById("tracker-fill").style.width = `${statusVal}%`;
+        }
+
+        // Render Recent Bookings Table
         const tbody = document.getElementById("recent-bookings-tbody");
         const sortedBookings = [...userBookings].sort((a,b) => new Date(b.date) - new Date(a.date)).slice(0, 4);
 
         if (sortedBookings.length === 0) {
           tbody.innerHTML = `
             <tr>
-              <td colspan="6" style="text-align: center; color: var(--text-secondary); padding: 32px;">
-                No bookings found. Try <a href="booking.html" style="color: var(--primary-green); font-weight: 600; text-decoration: none;">scheduling a session</a>!
+              <td colspan="6" style="text-align: center; color: #64748B; padding: 20px;">
+                No recent bookings. <a href="booking.html" style="color: #3B82F6; font-weight: 600; text-decoration: none;">Book a session now!</a>
               </td>
             </tr>
           `;
@@ -160,10 +281,10 @@
             return `
               <tr>
                 <td><strong>#${b.id}</strong></td>
-                <td>${b.serviceName} (${b.packageName})</td>
+                <td>${b.serviceName} (${b.packageName || 'Standard'})</td>
                 <td>${b.date}</td>
-                <td>${b.time}</td>
-                <td><strong>₹${b.amount.toLocaleString('en-IN')}</strong></td>
+                <td>${b.time || '10:00 AM'}</td>
+                <td><strong>₹${(b.amount || 0).toLocaleString('en-IN')}</strong></td>
                 <td><span class="badge ${statusBadge}">${b.status}</span></td>
               </tr>
             `;
@@ -171,18 +292,97 @@
         }
       }
 
-      // Logout handler
-      document.getElementById("sidebar-logout").addEventListener("click", (e) => {
-        e.preventDefault();
-        window.logoutUser();
-        window.showToast("Logged out successfully");
-        setTimeout(() => {
-          window.location.href = "index.html";
-        }, 1000);
+      // Service image mapping dictionary
+      const serviceImagesMap = {
+        "srv-portrait": "../assets/portrait.jpg",
+        "srv-wedding": "../assets/wedding.jpg",
+        "srv-product": "../assets/product.jpg",
+        "srv-prewedding": "../assets/prewedding.jpg",
+        "srv-baby": "../assets/baby.jpg",
+        "srv-event": "../assets/event.jpg",
+        "srv-video": "../assets/video.jpg",
+        "srv-editing": "../assets/editing.jpg"
+      };
+
+      // Render Service Cards Grid Function
+      function renderServicesGrid(filterCat = 'all') {
+        const grid = document.getElementById("featured-services-grid");
+        if (!grid) return;
+
+        let filtered = services;
+        if (filterCat !== 'all') {
+          filtered = services.filter(s => s.category && s.category.toLowerCase().includes(filterCat.toLowerCase()));
+        }
+        if (filtered.length === 0) filtered = services;
+
+        grid.innerHTML = filtered.slice(0, 4).map(s => {
+          let imgSrc = s.image;
+          if (serviceImagesMap[s.id]) {
+            imgSrc = serviceImagesMap[s.id];
+          } else if (s.name.toLowerCase().includes("baby")) {
+            imgSrc = "../assets/baby.jpg";
+          } else if (s.name.toLowerCase().includes("event")) {
+            imgSrc = "../assets/event.jpg";
+          } else if (s.name.toLowerCase().includes("video")) {
+            imgSrc = "../assets/video.jpg";
+          } else if (s.name.toLowerCase().includes("edit")) {
+            imgSrc = "../assets/editing.jpg";
+          } else if (s.name.toLowerCase().includes("portrait")) {
+            imgSrc = "../assets/portrait.jpg";
+          } else if (s.name.toLowerCase().includes("wedding") && !s.name.toLowerCase().includes("pre")) {
+            imgSrc = "../assets/wedding.jpg";
+          } else if (s.name.toLowerCase().includes("product")) {
+            imgSrc = "../assets/product.jpg";
+          } else if (s.name.toLowerCase().includes("pre-wedding") || s.name.toLowerCase().includes("prewedding")) {
+            imgSrc = "../assets/prewedding.jpg";
+          }
+
+          imgSrc = imgSrc || 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=600&q=80';
+
+          return `
+            <div class="app-card-item">
+              <div style="width: 100%; height: 110px; border-radius: 10px; overflow: hidden; margin-bottom: 10px; background: #F1F5F9;">
+                <img src="${imgSrc}" alt="${s.name}" style="width: 100%; height: 100%; object-fit: cover;">
+              </div>
+              <div>
+                <h4 class="app-card-title">${s.name}</h4>
+                <p class="app-card-desc">${(s.description || 'Professional studio photoshoot with lighting and retouched deliverables.').substring(0, 45)}...</p>
+              </div>
+              <div class="app-card-footer">
+                <div class="app-card-price">
+                  ₹${(s.price || s.basePrice || 1500).toLocaleString('en-IN')}
+                  <span>/ session</span>
+                </div>
+                <a href="booking.html?service=${s.id}" class="app-card-book-btn">Book</a>
+              </div>
+            </div>
+          `;
+        }).join("");
+
+        if (window.lucide) window.lucide.createIcons();
+      }
+
+      renderServicesGrid('all');
+
+      // Category Pills Click Handlers
+      const categoryPills = document.querySelectorAll("#dashboard-category-pills .app-cat-pill");
+      categoryPills.forEach(pill => {
+        pill.addEventListener("click", () => {
+          categoryPills.forEach(p => p.classList.remove("active"));
+          pill.classList.add("active");
+          const cat = pill.getAttribute("data-category");
+          renderServicesGrid(cat);
+        });
       });
 
       if (window.lucide) window.lucide.createIcons();
-    });
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initDashboardPage);
+    } else {
+      initDashboardPage();
+    }
   </script>
 </body>
 </html>

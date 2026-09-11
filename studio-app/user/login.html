@@ -3,66 +3,93 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - Aura Studio</title>
+  <title>Login - Tamil Digital</title>
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/user.css">
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background-color: var(--background); padding: 24px;">
 
-  <div class="card" style="width: 100%; max-width: 420px; box-shadow: var(--shadow-xl); padding: 40px;">
+  <div class="card" style="width: 100%; max-width: 360px; box-shadow: var(--shadow-lg); padding: 26px 24px; border-radius: var(--radius-lg);">
     <!-- Logo -->
-    <div style="text-align: center; margin-bottom: 32px;">
-      <a href="index.html" style="font-size: 24px; font-weight: 800; color: var(--text-primary); text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
-        <i data-lucide="camera" style="color: var(--primary-green); width: 32px; height: 32px;"></i>
-        <span>Aura<span style="color: var(--primary-green);">Studio</span></span>
+    <div style="text-align: center; margin-bottom: 20px;">
+      <a href="index.html" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 6px;">
+        <img src="../assets/logo.png" alt="Tamil Digital Logo" style="height: 40px; object-fit: contain;">
       </a>
-      <p style="color: var(--text-secondary); margin-top: 8px; font-size: 14px;">Welcome back! Please enter your details.</p>
+      <p style="color: var(--text-secondary); font-size: 12.5px; margin-top: 2px;">Select portal to continue</p>
     </div>
 
     <!-- Alert for Admin redirect -->
-    <div id="admin-warning-alert" style="display: none; background-color: #FEF3C7; border: 1px solid #F59E0B; color: #D97706; padding: 12px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 500; margin-bottom: 20px; display: flex; align-items: flex-start; gap: 8px;">
-      <i data-lucide="alert-triangle" style="width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px;"></i>
-      <span>Access Restricted. Admin login is required to access the dashboard. Use <strong>admin@studio.com</strong> / <strong>admin123</strong>.</span>
+    <div id="admin-warning-alert" style="display: none; background-color: #FEF3C7; border: 1px solid #F59E0B; color: #D97706; padding: 10px; border-radius: var(--radius-sm); font-size: 12px; font-weight: 500; margin-bottom: 16px; align-items: flex-start; gap: 6px;">
+      <i data-lucide="alert-triangle" style="width: 16px; height: 16px; flex-shrink: 0; margin-top: 1px;"></i>
+      <span>Admin access required. Use <strong>admin@studio.com</strong> / <strong>admin123</strong>.</span>
+    </div>
+
+    <!-- Portal / Role Selector -->
+    <div style="margin-bottom: 18px;">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; background: var(--background); padding: 4px; border-radius: 99px; border: 1px solid var(--border);">
+        <button type="button" id="role-tab-user" class="role-tab-btn" style="padding: 8px 12px; border-radius: 99px; border: none; font-weight: 700; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; transition: var(--transition); background: var(--primary-green); color: white; box-shadow: var(--shadow-sm);">
+          <i data-lucide="user" style="width: 14px; height: 14px;"></i>
+          <span>User Portal</span>
+        </button>
+        <button type="button" id="role-tab-admin" class="role-tab-btn" style="padding: 8px 12px; border-radius: 99px; border: none; font-weight: 600; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; transition: var(--transition); background: transparent; color: var(--text-secondary);">
+          <i data-lucide="shield" style="width: 14px; height: 14px;"></i>
+          <span>Admin Portal</span>
+        </button>
+      </div>
+      <p id="portal-desc" style="text-align: center; font-size: 11.5px; color: var(--text-secondary); margin-top: 8px; margin-bottom: 0;">
+        Logging in as <strong style="color: var(--primary-green);">Customer</strong>.
+      </p>
     </div>
 
     <!-- Login Form -->
     <form id="login-form">
-      <div class="form-group">
-        <label for="email" class="form-label">Email Address</label>
-        <input type="email" id="email" class="form-input" placeholder="you@example.com" required value="customer@gmail.com">
+      <div class="form-group" style="margin-bottom: 12px;">
+        <label for="email" class="form-label" style="font-size: 12px; margin-bottom: 4px;">Email Address</label>
+        <input type="email" id="email" class="form-input" placeholder="you@example.com" required value="customer@gmail.com" style="padding: 8px 12px; font-size: 13px;">
       </div>
 
-      <div class="form-group">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-          <label for="password" class="form-label" style="margin: 0;">Password</label>
-          <a href="#" id="forgot-password-link" style="font-size: 13px; color: var(--primary-green); text-decoration: none; font-weight: 600;">Forgot password?</a>
+      <div class="form-group" style="margin-bottom: 12px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+          <label for="password" class="form-label" style="margin: 0; font-size: 12px;">Password</label>
+          <a href="#" id="forgot-password-link" style="font-size: 11.5px; color: var(--primary-green); text-decoration: none; font-weight: 600;">Forgot?</a>
         </div>
-        <input type="password" id="password" class="form-input" placeholder="••••••••" required value="customer123">
+        <input type="password" id="password" class="form-input" placeholder="••••••••" required value="customer123" style="padding: 8px 12px; font-size: 13px;">
       </div>
 
-      <div class="form-group" style="display: flex; justify-content: space-between; align-items: center;">
-        <label class="checkbox-label">
-          <input type="checkbox" id="remember-me">
+      <div class="form-group" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+        <label class="checkbox-label" style="font-size: 12px;">
+          <input type="checkbox" id="remember-me" checked>
           <span>Remember me</span>
         </label>
       </div>
 
-      <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px; margin-top: 8px; font-size: 15px;">Sign In</button>
+      <button type="submit" id="login-submit-btn" class="btn btn-primary" style="width: 100%; padding: 10px; font-size: 13.5px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 6px; border-radius: 99px;">
+        <span>Sign In to User Dashboard</span>
+        <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
+      </button>
     </form>
 
     <!-- Switch links -->
-    <div style="text-align: center; margin-top: 28px; font-size: 14px; color: var(--text-secondary);">
+    <div style="text-align: center; margin-top: 16px; font-size: 12.5px; color: var(--text-secondary);">
       <span>Don't have an account? </span>
       <a href="register.html" style="color: var(--primary-green); text-decoration: none; font-weight: 600;">Sign up</a>
     </div>
 
     <!-- Quick Credentials Helper -->
-    <div style="background-color: var(--soft-blue); border: 1px solid var(--light-blue); padding: 14px; border-radius: var(--radius-sm); margin-top: 28px; font-size: 12px; color: var(--text-primary);">
-      <p style="font-weight: 700; margin-bottom: 6px; color: var(--primary-blue);">Demo Accounts Quick Fill:</p>
+    <div style="background-color: var(--soft-blue); border: 1px solid var(--light-blue); padding: 10px 12px; border-radius: var(--radius-sm); margin-top: 16px; font-size: 11px; color: var(--text-primary);">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+        <span style="font-weight: 700; color: var(--primary-blue);">Demo Accounts:</span>
+      </div>
       <div style="display: flex; flex-direction: column; gap: 4px;">
-        <p>• <strong>Customer</strong>: customer@gmail.com / customer123</p>
-        <p>• <strong>Admin</strong>: admin@studio.com / admin123</p>
+        <div id="quick-fill-user" style="cursor: pointer; padding: 4px 8px; background: white; border-radius: var(--radius-sm); border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+          <span>👤 Customer</span>
+          <span style="color: var(--primary-green); font-weight: 600;">Auto-Fill</span>
+        </div>
+        <div id="quick-fill-admin" style="cursor: pointer; padding: 4px 8px; background: white; border-radius: var(--radius-sm); border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+          <span>🛡️ Admin</span>
+          <span style="color: var(--primary-blue); font-weight: 600;">Auto-Fill</span>
+        </div>
       </div>
     </div>
   </div>
@@ -72,51 +99,107 @@
   <script src="../js/app.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
+      let currentRole = "customer";
+      const roleUserBtn = document.getElementById("role-tab-user");
+      const roleAdminBtn = document.getElementById("role-tab-admin");
+      const portalDesc = document.getElementById("portal-desc");
+      const submitBtn = document.getElementById("login-submit-btn");
+      const emailInput = document.getElementById("email");
+      const passwordInput = document.getElementById("password");
+      const forgotLink = document.getElementById("forgot-password-link");
+
+      function setRole(role) {
+        currentRole = role;
+        if (role === "customer") {
+          roleUserBtn.style.background = "var(--primary-green)";
+          roleUserBtn.style.color = "white";
+          roleUserBtn.style.boxShadow = "var(--shadow-sm)";
+          roleAdminBtn.style.background = "transparent";
+          roleAdminBtn.style.color = "var(--text-secondary)";
+          roleAdminBtn.style.boxShadow = "none";
+
+          emailInput.value = "customer@gmail.com";
+          passwordInput.value = "customer123";
+          submitBtn.style.backgroundColor = "var(--primary-green)";
+          submitBtn.style.borderColor = "var(--primary-green)";
+          submitBtn.innerHTML = `<span>Sign In to User Dashboard</span><i data-lucide="arrow-right" style="width: 18px; height: 18px;"></i>`;
+          portalDesc.innerHTML = `Logging in as <strong style="color: var(--primary-green);">Customer</strong>. You will be redirected to the <strong>User Dashboard</strong>.`;
+          forgotLink.style.color = "var(--primary-green)";
+        } else {
+          roleAdminBtn.style.background = "var(--primary-blue)";
+          roleAdminBtn.style.color = "white";
+          roleAdminBtn.style.boxShadow = "var(--shadow-sm)";
+          roleUserBtn.style.background = "transparent";
+          roleUserBtn.style.color = "var(--text-secondary)";
+          roleUserBtn.style.boxShadow = "none";
+
+          emailInput.value = "admin@studio.com";
+          passwordInput.value = "admin123";
+          submitBtn.style.backgroundColor = "var(--primary-blue)";
+          submitBtn.style.borderColor = "var(--primary-blue)";
+          submitBtn.innerHTML = `<span>Sign In to Admin Dashboard</span><i data-lucide="shield-check" style="width: 18px; height: 18px;"></i>`;
+          portalDesc.innerHTML = `Logging in as <strong style="color: var(--primary-blue);">Administrator</strong>. You will be redirected to the <strong>Admin Dashboard</strong>.`;
+          forgotLink.style.color = "var(--primary-blue)";
+        }
+        if (window.lucide) window.lucide.createIcons();
+      }
+
+      roleUserBtn.addEventListener("click", () => setRole("customer"));
+      roleAdminBtn.addEventListener("click", () => setRole("admin"));
+
+      document.getElementById("quick-fill-user").addEventListener("click", () => setRole("customer"));
+      document.getElementById("quick-fill-admin").addEventListener("click", () => setRole("admin"));
+
       // Check query params for admin redirect warning
       const params = new URLSearchParams(window.location.search);
       const isWarning = params.get("admin_redirect") === "1";
+      const roleParam = params.get("role");
       const warningAlert = document.getElementById("admin-warning-alert");
+
       if (isWarning && warningAlert) {
         warningAlert.style.display = "flex";
-        // Pre-fill admin credentials
-        document.getElementById("email").value = "admin@studio.com";
-        document.getElementById("password").value = "admin123";
+        setRole("admin");
+      } else if (roleParam === "admin") {
+        setRole("admin");
+      } else {
+        setRole("customer");
       }
 
       // Login form handling
       const form = document.getElementById("login-form");
       form.addEventListener("submit", (e) => {
         e.preventDefault();
-        const email = document.getElementById("email").value.trim();
-        const password = document.getElementById("password").value;
+        const email = emailInput.value.trim();
+        const password = passwordInput.value;
 
         const result = window.loginUser(email, password);
         if (result.success) {
-          window.showToast("Logged in successfully!");
+          const isUserAdmin = result.user.role === "admin";
+          window.showToast(`Logged in successfully as ${isUserAdmin ? 'Admin' : result.user.name.split(' ')[0]}!`);
           setTimeout(() => {
-            if (result.user.role === "admin") {
+            if (isUserAdmin) {
               window.location.href = "../admin/index.html";
             } else {
-              // If there was a pending booking attempt, we can redirect back to booking, or defaults to index
               const next = params.get("next");
               if (next) {
                 window.location.href = next;
               } else {
-                window.location.href = "index.html";
+                window.location.href = "dashboard.html";
               }
             }
-          }, 1000);
+          }, 800);
         } else {
           window.showToast(result.message, "danger");
         }
       });
 
       // Forgot password trigger
-      const forgotLink = document.getElementById("forgot-password-link");
       forgotLink.addEventListener("click", (e) => {
         e.preventDefault();
         window.showToast("Password reset link sent to your email (Mocked)", "info");
       });
+
+      if (window.lucide) window.lucide.createIcons();
     });
   </script>
 </body>

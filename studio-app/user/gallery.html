@@ -3,64 +3,78 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gallery - Aura Studio</title>
+  <title>Studio Gallery - Aura Studio</title>
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/user.css">
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body>
+<body style="background: var(--bg-light, #F8FAFC); margin: 0; min-height: 100vh; display: flex; flex-direction: column;">
 
   <!-- Dynamic Navbar -->
   <div id="navbar-placeholder"></div>
 
-  <!-- Header Banner -->
-  <header style="background: linear-gradient(135deg, var(--soft-green) 0%, var(--soft-blue) 100%); padding: 64px 24px; text-align: center; border-bottom: 1px solid var(--border);">
-    <div style="max-width: 800px; margin: 0 auto;">
-      <h1 style="font-size: 36px; font-weight: 800; color: var(--text-primary); margin-bottom: 8px;">Our Photo Portfolio</h1>
-      <p style="color: var(--text-secondary); font-size: 15px;">A collection of beautiful memories and commercial projects shot in our studio and on-site.</p>
-    </div>
-  </header>
+  <!-- Scrollable Container -->
+  <main style="max-width: 1240px; margin: 0 auto; padding: 32px 24px; flex: 1; width: 100%; box-sizing: border-box;">
+        
+        <!-- Header Banner -->
+        <div style="margin-bottom: 24px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px;">
+          <div>
+            <h1 style="font-size: 24px; font-weight: 800; color: #0F172A; margin-bottom: 4px;">Studio Showcase Portfolio</h1>
+            <p style="color: #64748B; font-size: 14px;">Browse high-resolution captures from our recent portrait sessions and wedding films.</p>
+          </div>
+        </div>
 
-  <!-- Gallery Main Section -->
-  <main class="container" style="padding: 64px 24px;">
-    <!-- Filter Tabs -->
-    <div class="gallery-filter-tabs" id="filter-tabs-container">
-      <button class="filter-tab active" data-category="all">All Photos</button>
-      <button class="filter-tab" data-category="portrait">Portrait</button>
-      <button class="filter-tab" data-category="wedding">Wedding</button>
-      <button class="filter-tab" data-category="pre-wedding">Pre-Wedding</button>
-      <button class="filter-tab" data-category="product">Product</button>
-      <button class="filter-tab" data-category="events">Events</button>
-    </div>
+        <!-- Filter Category Pills -->
+        <div class="app-category-pills" id="gallery-category-pills" style="margin-bottom: 24px;">
+          <div class="app-cat-pill active" data-category="all">
+            <i data-lucide="grid" style="width: 14px; height: 14px;"></i> All Photos
+          </div>
+          <div class="app-cat-pill" data-category="portrait">
+            <i data-lucide="user" style="width: 14px; height: 14px;"></i> Portrait
+          </div>
+          <div class="app-cat-pill" data-category="wedding">
+            <i data-lucide="heart" style="width: 14px; height: 14px;"></i> Wedding
+          </div>
+          <div class="app-cat-pill" data-category="pre-wedding">
+            <i data-lucide="sparkles" style="width: 14px; height: 14px;"></i> Pre-Wedding
+          </div>
+          <div class="app-cat-pill" data-category="product">
+            <i data-lucide="package" style="width: 14px; height: 14px;"></i> Product
+          </div>
+          <div class="app-cat-pill" data-category="events">
+            <i data-lucide="calendar" style="width: 14px; height: 14px;"></i> Events
+          </div>
+        </div>
 
-    <!-- Gallery Grid -->
-    <div class="gallery-grid" id="gallery-grid-container">
-      <!-- Populated via javascript -->
-    </div>
+        <!-- Gallery Grid -->
+        <div class="gallery-grid" id="gallery-grid-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 18px;">
+          <!-- Populated via javascript -->
+        </div>
+
   </main>
 
+  <!-- Footer -->
+  <div id="footer-placeholder"></div>
+
   <!-- Lightbox Modal -->
-  <div id="gallery-lightbox" class="lightbox-modal">
-    <div class="lightbox-content-box">
-      <button class="lightbox-close" id="close-lightbox"><i data-lucide="x"></i></button>
-      <img id="lightbox-image" class="lightbox-img" src="" alt="Lightbox Showcase">
-      <p id="lightbox-title" class="lightbox-caption">Caption</p>
+  <div id="gallery-lightbox" class="lightbox-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15,23,42,0.85); backdrop-filter: blur(8px); z-index: 99999; align-items: center; justify-content: center; padding: 20px;">
+    <div class="lightbox-content-box" style="position: relative; max-width: 800px; width: 100%; background: transparent; text-align: center;">
+      <button class="lightbox-close" id="close-lightbox" style="position: absolute; top: -40px; right: 0; background: none; border: none; color: white; cursor: pointer; font-size: 24px;"><i data-lucide="x"></i></button>
+      <img id="lightbox-image" class="lightbox-img" src="" alt="Lightbox Showcase" style="max-width: 100%; max-height: 75vh; border-radius: 16px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); object-fit: contain;">
+      <p id="lightbox-title" class="lightbox-caption" style="color: white; font-weight: 600; font-size: 16px; margin-top: 14px;">Caption</p>
     </div>
   </div>
-
-  <!-- Dynamic Footer -->
-  <div id="footer-placeholder"></div>
 
   <!-- Global scripts -->
   <script src="../js/data.js"></script>
   <script src="../js/storage.js"></script>
   <script src="../js/app.js"></script>
+  <script src="../js/user.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const galleryItems = window.getGallery ? window.getGallery() : [];
       const gridContainer = document.getElementById("gallery-grid-container");
-      const tabContainer = document.getElementById("filter-tabs-container");
-      const tabs = tabContainer.querySelectorAll(".filter-tab");
+      const pills = document.querySelectorAll("#gallery-category-pills .app-cat-pill");
       
       // Lightbox elements
       const lightbox = document.getElementById("gallery-lightbox");
@@ -72,13 +86,13 @@
       function renderGallery(filterCategory = "all") {
         const filtered = filterCategory === "all" 
           ? galleryItems 
-          : galleryItems.filter(item => item.category.toLowerCase() === filterCategory.toLowerCase());
+          : galleryItems.filter(item => item.category && item.category.toLowerCase() === filterCategory.toLowerCase());
 
         if (filtered.length === 0) {
           gridContainer.innerHTML = `
-            <div style="grid-column: 1/-1; text-align: center; padding: 64px; color: var(--text-secondary);">
+            <div style="grid-column: 1/-1; text-align: center; padding: 64px; color: #64748B;">
               <i data-lucide="image-off" style="width: 48px; height: 48px; margin: 0 auto 16px auto; opacity: 0.5;"></i>
-              <p>No photos in this category yet.</p>
+              <p>No photos found in this category yet.</p>
             </div>
           `;
           if (window.lucide) window.lucide.createIcons();
@@ -86,10 +100,10 @@
         }
 
         gridContainer.innerHTML = filtered.map(item => `
-          <div class="gallery-item" data-url="${item.url}" data-title="${item.title}">
-            <img src="${item.url}" alt="${item.title}" loading="lazy">
-            <div class="gallery-item-overlay">
-              <span class="gallery-title">${item.title}</span>
+          <div class="gallery-item" data-url="${item.url}" data-title="${item.title}" style="position: relative; border-radius: 16px; overflow: hidden; height: 220px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.04);">
+            <img src="${item.url}" alt="${item.title}" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;">
+            <div class="gallery-item-overlay" style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.7), transparent); padding: 16px 12px; color: white; display: flex; align-items: flex-end;">
+              <span class="gallery-title" style="font-weight: 600; font-size: 13px;">${item.title}</span>
             </div>
           </div>
         `).join("");
@@ -104,6 +118,7 @@
             lightboxImg.setAttribute("src", url);
             lightboxTitle.textContent = title;
             lightbox.style.display = "flex";
+            if (window.lucide) window.lucide.createIcons();
           });
         });
       }
@@ -111,12 +126,12 @@
       // Initial run
       renderGallery("all");
 
-      // Filter tabs event listener
-      tabs.forEach(tab => {
-        tab.addEventListener("click", () => {
-          tabs.forEach(t => t.classList.remove("active"));
-          tab.classList.add("active");
-          const category = tab.getAttribute("data-category");
+      // Filter category pills event listener
+      pills.forEach(pill => {
+        pill.addEventListener("click", () => {
+          pills.forEach(t => t.classList.remove("active"));
+          pill.classList.add("active");
+          const category = pill.getAttribute("data-category");
           renderGallery(category);
         });
       });
@@ -134,6 +149,8 @@
       document.addEventListener("keydown", (e) => {
         if (e.key === "Escape") closeLightbox();
       });
+
+      if (window.lucide) window.lucide.createIcons();
     });
   </script>
 </body>

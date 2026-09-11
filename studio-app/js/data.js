@@ -9,6 +9,7 @@ const INITIAL_SERVICES = [
     price: 1500,
     duration: "1 Hour",
     icon: "camera",
+    image: "../assets/portrait.jpg",
     status: "active"
   },
   {
@@ -18,6 +19,7 @@ const INITIAL_SERVICES = [
     price: 25000,
     duration: "8 Hours",
     icon: "heart",
+    image: "../assets/wedding.jpg",
     status: "active"
   },
   {
@@ -27,6 +29,7 @@ const INITIAL_SERVICES = [
     price: 3000,
     duration: "2 Hours",
     icon: "package",
+    image: "../assets/product.jpg",
     status: "active"
   },
   {
@@ -36,6 +39,7 @@ const INITIAL_SERVICES = [
     price: 12000,
     duration: "4 Hours",
     icon: "images",
+    image: "../assets/prewedding.jpg",
     status: "active"
   },
   {
@@ -45,6 +49,7 @@ const INITIAL_SERVICES = [
     price: 5000,
     duration: "1.5 Hours",
     icon: "smile",
+    image: "../assets/baby.jpg",
     status: "active"
   },
   {
@@ -54,6 +59,7 @@ const INITIAL_SERVICES = [
     price: 8000,
     duration: "3 Hours",
     icon: "calendar",
+    image: "../assets/event.jpg",
     status: "active"
   },
   {
@@ -63,6 +69,7 @@ const INITIAL_SERVICES = [
     price: 15000,
     duration: "4 Hours",
     icon: "video",
+    image: "../assets/video.jpg",
     status: "active"
   },
   {
@@ -72,6 +79,7 @@ const INITIAL_SERVICES = [
     price: 500,
     duration: "Per Photo",
     icon: "sliders",
+    image: "../assets/editing.jpg",
     status: "active"
   }
 ];

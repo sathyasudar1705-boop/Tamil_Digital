@@ -92,16 +92,22 @@
 
       </div>
 
-      <!-- Right side: Solution Promo Card -->
-      <div class="solution-promo">
-        <span style="color: var(--primary-blue); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px;">Solutions Catalog</span>
-        <h2 style="font-size: 32px; font-weight: 800; color: var(--text-primary); margin: 8px 0 20px 0; line-height: 1.2;">
-          Creative Studio Solutions For Business To Solve Any Visual Problems
-        </h2>
-        <p style="color: var(--text-secondary); font-size: 15px; line-height: 1.6; margin-bottom: 32px;">
-          Whether you are launching a premium skincare brand requiring clean macro product shots or coordinating a 3-day wedding event, our team has the camera rigs and creative directors to deliver flawless results.
-        </p>
-        <a href="booking.html" class="btn btn-secondary btn-lg">Book a Session</a>
+      <!-- Right side: Solution Promo Card with dynamic background -->
+      <div class="solution-promo" id="solution-promo-card" data-active="1">
+        <div>
+          <span class="solution-promo-tag" id="promo-tag">Solutions Catalog • In-Studio</span>
+          <h2 class="solution-promo-title" id="promo-title">
+            Creative In-Studio Lighting & Production Solutions
+          </h2>
+          <p class="solution-promo-desc" id="promo-desc">
+            Professional headshots, modeling portfolios, product e-commerce listings, and creative family portraits in our temperature-controlled light setup.
+          </p>
+        </div>
+        <div>
+          <a href="booking.html" class="app-hero-btn primary" style="padding: 10px 24px; font-size: 13.5px; border-radius: 99px; display: inline-flex;">
+            Book a Session
+          </a>
+        </div>
       </div>
     </div>
   </section>
@@ -364,14 +370,52 @@
   <script src="../js/storage.js"></script>
   <script src="../js/app.js"></script>
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      // 1. Solution Accordion Interactions (01, 02, 03 details toggle)
+    function initLandingPage() {
+      // 1. Solution Accordion & Right Card Background Dynamic Switching
       const solutionItems = document.querySelectorAll(".solution-item");
-      solutionItems.forEach(item => {
-        item.addEventListener("click", () => {
-          solutionItems.forEach(el => el.classList.remove("active"));
-          item.classList.add("active");
+      const promoCard = document.getElementById("solution-promo-card");
+      const promoTag = document.getElementById("promo-tag");
+      const promoTitle = document.getElementById("promo-title");
+      const promoDesc = document.getElementById("promo-desc");
+
+      const solutionDetails = {
+        1: {
+          tag: "Solutions Catalog • In-Studio",
+          title: "Creative In-Studio Lighting & Production Solutions",
+          desc: "Professional headshots, modeling portfolios, product e-commerce listings, and creative family portraits in our temperature-controlled light setup."
+        },
+        2: {
+          tag: "Solutions Catalog • On-Location",
+          title: "Cinematic Outdoor & Event Photography Rigs",
+          desc: "Cinematic wedding coverage, sunrise/sunset outdoor pre-wedding couple sessions, and corporate stage event videography anywhere on location."
+        },
+        3: {
+          tag: "Solutions Catalog • Post Production",
+          title: "High-End Retouching, Color Grading & Editing",
+          desc: "Premium retouching, skin smoothing, object removals, backdrop replacements, color correction, and promotional video editing suite."
+        }
+      };
+
+      function activateSolution(index) {
+        solutionItems.forEach(el => {
+          if (el.getAttribute("data-index") === String(index)) {
+            el.classList.add("active");
+          } else {
+            el.classList.remove("active");
+          }
         });
+        if (promoCard && solutionDetails[index]) {
+          promoCard.setAttribute("data-active", index);
+          if (promoTag) promoTag.textContent = solutionDetails[index].tag;
+          if (promoTitle) promoTitle.textContent = solutionDetails[index].title;
+          if (promoDesc) promoDesc.textContent = solutionDetails[index].desc;
+        }
+      }
+
+      solutionItems.forEach(item => {
+        const idx = item.getAttribute("data-index");
+        item.addEventListener("mouseenter", () => activateSolution(idx));
+        item.addEventListener("click", () => activateSolution(idx));
       });
 
       // 2. Tracking Form Status Lookups (Client-Side dynamic lookup)
@@ -381,52 +425,57 @@
       const okTrackingBtn = document.getElementById("tracking-ok-btn");
       const trackingResultBox = document.getElementById("tracking-result-box");
 
-      trackingForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const bId = document.getElementById("track-id-input").value.trim().toLowerCase();
-        
-        // Fetch all bookings from localStorage
-        const bookingsList = window.getBookings ? window.getBookings() : [];
-        const found = bookingsList.find(b => b.id.toLowerCase() === bId || b.id.toLowerCase() === `bk-${bId}`);
+      if (trackingForm) {
+        trackingForm.addEventListener("submit", (e) => {
+          e.preventDefault();
+          const trackInput = document.getElementById("track-id-input");
+          const bId = trackInput ? trackInput.value.trim().toLowerCase() : '';
+          
+          // Fetch all bookings from localStorage
+          const bookingsList = window.getBookings ? window.getBookings() : [];
+          const found = bookingsList.find(b => b.id.toLowerCase() === bId || b.id.toLowerCase() === `bk-${bId}`);
 
-        if (found) {
-          let statusBadgeClass = "badge-info";
-          if (found.status === "Confirmed" || found.status === "Completed") statusBadgeClass = "badge-success";
-          if (found.status === "Cancelled") statusBadgeClass = "badge-danger";
-          if (found.status === "Pending") statusBadgeClass = "badge-warning";
+          if (found && trackingResultBox) {
+            let statusBadgeClass = "badge-info";
+            if (found.status === "Confirmed" || found.status === "Completed") statusBadgeClass = "badge-success";
+            if (found.status === "Cancelled") statusBadgeClass = "badge-danger";
+            if (found.status === "Pending") statusBadgeClass = "badge-warning";
 
-          trackingResultBox.innerHTML = `
-            <p><strong>Booking ID:</strong> #${found.id}</p>
-            <p><strong>Client Name:</strong> ${found.customerName}</p>
-            <p><strong> photoshoot Service:</strong> ${found.serviceName}</p>
-            <p><strong>Package Tier:</strong> ${found.packageName}</p>
-            <p><strong>Scheduled Slot:</strong> ${found.date} at ${found.time}</p>
-            <p><strong>Grand Total:</strong> ₹${found.amount.toLocaleString('en-IN')}</p>
-            <p><strong>Approval Status:</strong> <span class="badge ${statusBadgeClass}">${found.status}</span></p>
-          `;
-        } else {
-          trackingResultBox.innerHTML = `
-            <div style="text-align: center; color: var(--danger); padding: 12px 0;">
-              <i data-lucide="alert-circle" style="width: 40px; height: 40px; margin-bottom: 8px;"></i>
-              <p><strong>Booking ID Not Found</strong></p>
-              <p style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">We couldn't locate any records matching "${bId.toUpperCase()}". Check your ID and try again.</p>
-            </div>
-          `;
-        }
+            trackingResultBox.innerHTML = `
+              <p><strong>Booking ID:</strong> #${found.id}</p>
+              <p><strong>Client Name:</strong> ${found.customerName}</p>
+              <p><strong>Photoshoot Service:</strong> ${found.serviceName}</p>
+              <p><strong>Package Tier:</strong> ${found.packageName}</p>
+              <p><strong>Scheduled Slot:</strong> ${found.date} at ${found.time}</p>
+              <p><strong>Grand Total:</strong> ₹${found.amount.toLocaleString('en-IN')}</p>
+              <p><strong>Approval Status:</strong> <span class="badge ${statusBadgeClass}">${found.status}</span></p>
+            `;
+          } else if (trackingResultBox) {
+            trackingResultBox.innerHTML = `
+              <div style="text-align: center; color: var(--danger); padding: 12px 0;">
+                <i data-lucide="alert-circle" style="width: 40px; height: 40px; margin-bottom: 8px;"></i>
+                <p><strong>Booking ID Not Found</strong></p>
+                <p style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">We couldn't locate any records matching "${bId.toUpperCase()}". Check your ID and try again.</p>
+              </div>
+            `;
+          }
 
-        trackingModal.style.display = "flex";
-        if (window.lucide) window.lucide.createIcons();
-      });
+          if (trackingModal) trackingModal.style.display = "flex";
+          if (window.lucide) window.lucide.createIcons();
+        });
+      }
 
       // Close modal functions
       function closeTrackingModal() {
-        trackingModal.style.display = "none";
+        if (trackingModal) trackingModal.style.display = "none";
       }
-      closeTrackingBtn.addEventListener("click", closeTrackingModal);
-      okTrackingBtn.addEventListener("click", closeTrackingModal);
-      trackingModal.addEventListener("click", (e) => {
-        if (e.target === trackingModal) closeTrackingModal();
-      });
+      if (closeTrackingBtn) closeTrackingBtn.addEventListener("click", closeTrackingModal);
+      if (okTrackingBtn) okTrackingBtn.addEventListener("click", closeTrackingModal);
+      if (trackingModal) {
+        trackingModal.addEventListener("click", (e) => {
+          if (e.target === trackingModal) closeTrackingModal();
+        });
+      }
 
       // 3. Background Video Ended Listener (Fades in description & buttons at the bottom)
       const heroVideo = document.getElementById("hero-bg-video");
@@ -442,7 +491,13 @@
       }
 
       if (window.lucide) window.lucide.createIcons();
-    });
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initLandingPage);
+    } else {
+      initLandingPage();
+    }
   </script>
 </body>
 </html>
